@@ -103,6 +103,7 @@ public class Population {
                 .age40sPopulation(age40sPopulation)
                 .age50sPopulation(age50sPopulation)
                 .age60sAndMorePopulation(age60sAndMorePopulation)
+                .build();
     }
 
 
