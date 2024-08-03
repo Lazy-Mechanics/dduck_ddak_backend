@@ -3,6 +3,7 @@ package com.dduckddak.domain.town.model;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class TownIndustry {
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -20,6 +21,7 @@ public class TownIndustry {
     @ManyToOne(fetch = FetchType.LAZY)
     private Industry industry;
 
+    @Builder
     public TownIndustry(long id, Industry industry, Town town) {
         this.id = id;
         this.industry = industry;
