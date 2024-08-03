@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class TownIndustry {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -21,7 +20,7 @@ public class TownIndustry {
     @ManyToOne(fetch = FetchType.LAZY)
     private Industry industry;
 
-    public TownIndustry(Long id, Industry industry, Town town) {
+    public TownIndustry(long id, Industry industry, Town town) {
         this.id = id;
         this.industry = industry;
         this.town = town;

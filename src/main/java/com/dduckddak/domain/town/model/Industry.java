@@ -17,9 +17,9 @@ public class Industry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String code;
 
-    public Industry(String name) {
-        this.name = name;
+    public Industry(String code) {
+        this.code = code;
     }
 }

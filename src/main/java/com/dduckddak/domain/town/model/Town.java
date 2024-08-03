@@ -7,12 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(
-                name = "uk_town_name_quarter",
-                columnNames = {"name", "quarter"}
-        )
-})
+//@Table(uniqueConstraints = {
+//        @UniqueConstraint(
+//                name = "uk_town_name_quarter",
+//                columnNames = {"name", "quarter"}
+//        )
+//})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Town {

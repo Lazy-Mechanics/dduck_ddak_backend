@@ -30,9 +30,6 @@ public class Population {
     private Long saturdayPopulation;
     private Long sundayPopulation;
 
-    private long weekdayPopulation;
-    private long weekendPopulation;
-
     private Long hour_0_6;
     private Long hour_6_11;
     private Long hour_11_14;
@@ -50,40 +47,35 @@ public class Population {
     private Long age50sPopulation;
     private Long age60sAndMorePopulation;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Town town;
 
     @Builder
-    public Population(PopulationType populationType, Long totalPopulation, Long mondayPopulation, Long tuesdayPopulation, Long wednesdayPopulation, Long thursdayPopulation,
-                      Long fridayPopulation, Long saturdayPopulation, Long sundayPopulation, long weekdayPopulation, long weekendPopulation,
-                      Long hour_0_6, Long hour_6_11, Long hour_11_14, Long hour_14_17, Long hour_17_21, Long hour_21_24, Long menPopulation,
-                      Long womenPopulation, Long age10sPopulation, Long age20sPopulation, Long age30sPopulation, Long age40sPopulation,
-                      Long age50sPopulation, Long age60sAndMorePopulation, Town town) {
-        this.populationType = populationType;
-        this.totalPopulation = totalPopulation;
-        this.mondayPopulation = mondayPopulation;
-        this.tuesdayPopulation = tuesdayPopulation;
-        this.wednesdayPopulation = wednesdayPopulation;
-        this.thursdayPopulation = thursdayPopulation;
-        this.fridayPopulation = fridayPopulation;
-        this.saturdayPopulation = saturdayPopulation;
-        this.sundayPopulation = sundayPopulation;
-        this.weekdayPopulation = weekdayPopulation;
-        this.weekendPopulation = weekendPopulation;
-        this.hour_0_6 = hour_0_6;
-        this.hour_6_11 = hour_6_11;
-        this.hour_11_14 = hour_11_14;
-        this.hour_14_17 = hour_14_17;
-        this.hour_17_21 = hour_17_21;
-        this.hour_21_24 = hour_21_24;
-        this.menPopulation = menPopulation;
-        this.womenPopulation = womenPopulation;
+    public Population(Long age10sPopulation, Long age20sPopulation, Long age30sPopulation, Long age40sPopulation, Long age50sPopulation, Long age60sAndMorePopulation, Long fridayPopulation, Long hour_0_6, Long hour_11_14, Long hour_14_17, Long hour_17_21, Long hour_21_24, Long hour_6_11, Long id, Long menPopulation, Long mondayPopulation, PopulationType populationType, Long saturdayPopulation, Long sundayPopulation, Long thursdayPopulation, Long totalPopulation, Town town, Long tuesdayPopulation, Long wednesdayPopulation, Long womenPopulation) {
         this.age10sPopulation = age10sPopulation;
         this.age20sPopulation = age20sPopulation;
         this.age30sPopulation = age30sPopulation;
         this.age40sPopulation = age40sPopulation;
         this.age50sPopulation = age50sPopulation;
         this.age60sAndMorePopulation = age60sAndMorePopulation;
+        this.fridayPopulation = fridayPopulation;
+        this.hour_0_6 = hour_0_6;
+        this.hour_11_14 = hour_11_14;
+        this.hour_14_17 = hour_14_17;
+        this.hour_17_21 = hour_17_21;
+        this.hour_21_24 = hour_21_24;
+        this.hour_6_11 = hour_6_11;
+        this.id = id;
+        this.menPopulation = menPopulation;
+        this.mondayPopulation = mondayPopulation;
+        this.populationType = populationType;
+        this.saturdayPopulation = saturdayPopulation;
+        this.sundayPopulation = sundayPopulation;
+        this.thursdayPopulation = thursdayPopulation;
+        this.totalPopulation = totalPopulation;
         this.town = town;
+        this.tuesdayPopulation = tuesdayPopulation;
+        this.wednesdayPopulation = wednesdayPopulation;
+        this.womenPopulation = womenPopulation;
     }
 }

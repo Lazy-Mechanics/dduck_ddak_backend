@@ -1,0 +1,31 @@
+package com.dduckddak.domain.data.repository;
+
+import com.dduckddak.domain.data.model.Sales;
+import com.dduckddak.domain.town.model.Industry;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
+import java.util.List;
+
+@Repository
+@RequiredArgsConstructor
+public class IndustryBulkRepository {
+    private final JdbcTemplate jdbcTemplate;
+
+    @Transactional
+    public void saveAll(List<Industry> industries) {
+        String sql = "INSERT INTO industry (" +
+                "code)" +
+                "VALUES (?)";
+
+        jdbcTemplate.batchUpdate(sql,
+                industries,
+                industries.size(),
+                (PreparedStatement pstmt, Industry industry) -> {
+                    pstmt.setString(1, industry.getCode());
+                });
+    }
+}

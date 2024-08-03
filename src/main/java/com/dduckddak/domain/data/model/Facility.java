@@ -3,6 +3,7 @@ package com.dduckddak.domain.data.model;
 import com.dduckddak.domain.town.model.Town;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -39,6 +40,7 @@ public class Facility {
     private Long subwayStationCnt;
     private Long busStopCnt;
 
+    @Builder
     public Facility(Long accommodationFacilityCnt, Long airportCnt, Long bankCnt, Long busStopCnt, Long busTerminalCnt, Long departmentStoreCnt,
                     Long elementarySchoolCnt, Long generalHospitalCnt, Long governmentOfficeCnt, Long highSchoolCnt, Long hospitalCnt,
                     Long kindergartenCnt, Long middleSchoolCnt, Long pharmacyCnt, Long publicAttractionFacilityCnt, Long railwayStationCnt,

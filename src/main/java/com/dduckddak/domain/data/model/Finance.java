@@ -3,6 +3,7 @@ package com.dduckddak.domain.data.model;
 import com.dduckddak.domain.town.model.Town;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,4 +29,21 @@ public class Finance {
 
     @OneToOne(fetch = FetchType.LAZY)
     private Town town;
+
+    @Builder
+    public Finance(Long averageMonthlyIncome, Long clothingExpenditure, Long educationExpenditure, Long entertainmentExpenditure, Long foodExpenditure, Long groceryExpenditure, Long householdGoodsExpenditure, Long id, Long leisureCultureExpenditure, Long medicalExpenditure, Long totalExpenditure, Town town, Long transportationExpenditure) {
+        this.averageMonthlyIncome = averageMonthlyIncome;
+        this.clothingExpenditure = clothingExpenditure;
+        this.educationExpenditure = educationExpenditure;
+        this.entertainmentExpenditure = entertainmentExpenditure;
+        this.foodExpenditure = foodExpenditure;
+        this.groceryExpenditure = groceryExpenditure;
+        this.householdGoodsExpenditure = householdGoodsExpenditure;
+        this.id = id;
+        this.leisureCultureExpenditure = leisureCultureExpenditure;
+        this.medicalExpenditure = medicalExpenditure;
+        this.totalExpenditure = totalExpenditure;
+        this.town = town;
+        this.transportationExpenditure = transportationExpenditure;
+    }
 }
