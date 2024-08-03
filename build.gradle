@@ -36,6 +36,12 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// json
+	implementation 'com.googlecode.json-simple:json-simple:1.1'
+
+	// log
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
 }
 
 tasks.named('test') {

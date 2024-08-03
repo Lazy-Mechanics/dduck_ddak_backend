@@ -16,10 +16,10 @@ public class Sales {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long currentMonthlySales;
+    private Long currentMonthlySales;   // 당월 매출
 
-    private Long mondaySales;
-    private Long tuesdaySales;
+    private Long mondaySales;           // 월요일 매출
+    private Long tuesdaySales;          //
     private Long wednesdaySales;
     private Long thursdaySales;
     private Long fridaySales;

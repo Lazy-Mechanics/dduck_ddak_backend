@@ -22,8 +22,4 @@ public class Industry {
     public Industry(String name) {
         this.name = name;
     }
-
-    public static Industry of(String name) {
-        return new Industry(name);
-    }
 }
