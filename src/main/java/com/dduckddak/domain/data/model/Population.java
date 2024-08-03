@@ -1,8 +1,8 @@
 package com.dduckddak.domain.data.model;
 
+import com.dduckddak.domain.town.model.TownIndustry;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -48,8 +48,14 @@ public class Population {
     private Long age50sPopulation;
     private Long age60sAndMorePopulation;
 
-    @Builder
-    public Population(PopulationType populationType, Long totalPopulation, Long mondayPopulation, Long tuesdayPopulation, Long wednesdayPopulation, Long thursdayPopulation, Long fridayPopulation, Long saturdayPopulation, Long sundayPopulation, long weekdayPopulation, long weekendPopulation, Long hour_0_6, Long hour_6_11, Long hour_11_14, Long hour_14_17, Long hour_17_21, Long hour_21_24, Long menPopulation, Long womenPopulation, Long age10sPopulation, Long age20sPopulation, Long age30sPopulation, Long age40sPopulation, Long age50sPopulation, Long age60sAndMorePopulation) {
+    @OneToOne(fetch = FetchType.LAZY)
+    private TownIndustry townIndustry;
+
+    public Population(PopulationType populationType, Long totalPopulation, Long mondayPopulation, Long tuesdayPopulation, Long wednesdayPopulation, Long thursdayPopulation,
+                      Long fridayPopulation, Long saturdayPopulation, Long sundayPopulation, long weekdayPopulation, long weekendPopulation,
+                      Long hour_0_6, Long hour_6_11, Long hour_11_14, Long hour_14_17, Long hour_17_21, Long hour_21_24, Long menPopulation,
+                      Long womenPopulation, Long age10sPopulation, Long age20sPopulation, Long age30sPopulation, Long age40sPopulation,
+                      Long age50sPopulation, Long age60sAndMorePopulation, TownIndustry townIndustry) {
         this.populationType = populationType;
         this.totalPopulation = totalPopulation;
         this.mondayPopulation = mondayPopulation;
@@ -75,35 +81,6 @@ public class Population {
         this.age40sPopulation = age40sPopulation;
         this.age50sPopulation = age50sPopulation;
         this.age60sAndMorePopulation = age60sAndMorePopulation;
+        this.townIndustry = townIndustry;
     }
-
-    public static Population of(PopulationType populationType, Long totalPopulation, Long mondayPopulation, Long tuesdayPopulation, Long wednesdayPopulation, Long thursdayPopulation, Long fridayPopulation, Long saturdayPopulation, Long sundayPopulation, long weekdayPopulation, long weekendPopulation, Long hour_0_6, Long hour_6_11, Long hour_11_14, Long hour_14_17, Long hour_17_21, Long hour_21_24, Long menPopulation, Long womenPopulation, Long age10sPopulation, Long age20sPopulation, Long age30sPopulation, Long age40sPopulation, Long age50sPopulation, Long age60sAndMorePopulation) {
-        return Population.builder()
-                .populationType(populationType)
-                .totalPopulation(totalPopulation)
-                .mondayPopulation(mondayPopulation)
-                .tuesdayPopulation(tuesdayPopulation)
-                .wednesdayPopulation(wednesdayPopulation)
-                .thursdayPopulation(thursdayPopulation)
-                .fridayPopulation(fridayPopulation)
-                .saturdayPopulation(saturdayPopulation)
-                .sundayPopulation(sundayPopulation)
-                .weekdayPopulation(weekdayPopulation)
-                .weekendPopulation(weekendPopulation)
-                .hour_0_6(hour_0_6)
-                .hour_6_11(hour_6_11)
-                .hour_11_14(hour_11_14)
-                .hour_14_17(hour_14_17)
-                .hour_17_21(hour_17_21)
-                .hour_21_24(hour_21_24)
-                .menPopulation(menPopulation)
-                .age10sPopulation(age10sPopulation)
-                .age20sPopulation(age20sPopulation)
-                .age30sPopulation(age30sPopulation)
-                .age40sPopulation(age40sPopulation)
-                .age50sPopulation(age50sPopulation)
-                .age60sAndMorePopulation(age60sAndMorePopulation)
-                .build();
-    }
-
 }

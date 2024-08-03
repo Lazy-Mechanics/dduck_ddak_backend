@@ -1,5 +1,6 @@
 package com.dduckddak.domain.data.model;
 
+import com.dduckddak.domain.town.model.TownIndustry;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -45,8 +46,14 @@ public class Sales {
     private Long age50sSales;
     private Long age60sAndMoreSales;
 
-    @Builder
-    public Sales(Long age10sSales, Long age20sSales, Long age30sSales, Long age40sSales, Long age50sSales, Long age60sAndMoreSales, Long currentMonthlySales, Long fridaySales, Long hour_0_6, Long hour_11_14, Long hour_14_17, Long hour_17_21, Long hour_21_24, Long hour_6_11, Long id, Long menSales, Long mondaySales, Long saturdaySales, Long sundaySales, Long thursdaySales, Long tuesdaySales, Long wednesdaySales, long weekdaySales, long weekendSales, Long womenSales) {
+    @OneToOne(fetch = FetchType.LAZY)
+    private TownIndustry townIndustry;
+
+    public Sales(Long age10sSales, Long age20sSales, Long age30sSales, Long age40sSales, Long age50sSales,
+                 Long age60sAndMoreSales, Long currentMonthlySales, Long fridaySales,
+                 Long hour_0_6, Long hour_11_14, Long hour_14_17, Long hour_17_21, Long hour_21_24, Long hour_6_11,
+                 Long menSales, Long mondaySales, Long saturdaySales, Long sundaySales, Long thursdaySales, TownIndustry townIndustry,
+                 Long tuesdaySales, Long wednesdaySales, long weekdaySales, long weekendSales, Long womenSales) {
         this.age10sSales = age10sSales;
         this.age20sSales = age20sSales;
         this.age30sSales = age30sSales;
@@ -61,46 +68,16 @@ public class Sales {
         this.hour_17_21 = hour_17_21;
         this.hour_21_24 = hour_21_24;
         this.hour_6_11 = hour_6_11;
-        this.id = id;
         this.menSales = menSales;
         this.mondaySales = mondaySales;
         this.saturdaySales = saturdaySales;
         this.sundaySales = sundaySales;
         this.thursdaySales = thursdaySales;
+        this.townIndustry = townIndustry;
         this.tuesdaySales = tuesdaySales;
         this.wednesdaySales = wednesdaySales;
         this.weekdaySales = weekdaySales;
         this.weekendSales = weekendSales;
         this.womenSales = womenSales;
-    }
-
-    public static Sales of(Long age10sSales, Long age20sSales, Long age30sSales, Long age40sSales, Long age50sSales, Long age60sAndMoreSales, Long currentMonthlySales, Long fridaySales, Long hour_0_6, Long hour_11_14, Long hour_14_17, Long hour_17_21, Long hour_21_24, Long hour_6_11, Long id, Long menSales, Long mondaySales, Long saturdaySales, Long sundaySales, Long thursdaySales, Long tuesdaySales, Long wednesdaySales, long weekdaySales, long weekendSales, Long womenSales) {
-        return Sales.builder()
-                .age10sSales(age10sSales)
-                .age20sSales(age20sSales)
-                .age30sSales(age30sSales)
-                .age40sSales(age40sSales)
-                .age50sSales(age50sSales)
-                .age60sAndMoreSales(age60sAndMoreSales)
-                .currentMonthlySales(currentMonthlySales)
-                .fridaySales(fridaySales)
-                .hour_0_6(hour_0_6)
-                .hour_11_14(hour_11_14)
-                .hour_14_17(hour_14_17)
-                .hour_17_21(hour_17_21)
-                .hour_21_24(hour_21_24)
-                .hour_6_11(hour_6_11)
-                .id(id)
-                .menSales(menSales)
-                .mondaySales(mondaySales)
-                .saturdaySales(saturdaySales)
-                .sundaySales(sundaySales)
-                .thursdaySales(thursdaySales)
-                .tuesdaySales(tuesdaySales)
-                .wednesdaySales(wednesdaySales)
-                .weekdaySales(weekdaySales)
-                .weekendSales(weekendSales)
-                .womenSales(womenSales)
-                .build();
     }
 }

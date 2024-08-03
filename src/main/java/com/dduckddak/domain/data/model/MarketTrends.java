@@ -1,12 +1,8 @@
 package com.dduckddak.domain.data.model;
 
 import com.dduckddak.domain.town.model.Town;
-import com.dduckddak.domain.town.model.TownId;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,8 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MarketTrends {
 
-    @EmbeddedId
-    private TownId townId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Town town;
 
     private String indexName; //지표명
     private Long operateAvg;
@@ -24,24 +24,13 @@ public class MarketTrends {
     private Long operateAvgBySeoul;
     private Long closeAvgBySeoul;
 
-    @Builder
-    public MarketTrends(TownId townId, String indexName, Long operateAvg, Long closeAvg, Long operateAvgBySeoul, Long closeAvgBySeoul) {
-        this.townId = townId;
+    public MarketTrends(Long closeAvg, Long closeAvgBySeoul, Long id, String indexName, Long operateAvg, Long operateAvgBySeoul, Town town) {
+        this.closeAvg = closeAvg;
+        this.closeAvgBySeoul = closeAvgBySeoul;
+        this.id = id;
         this.indexName = indexName;
         this.operateAvg = operateAvg;
-        this.closeAvg = closeAvg;
         this.operateAvgBySeoul = operateAvgBySeoul;
-        this.closeAvgBySeoul = closeAvgBySeoul;
-    }
-
-    public static MarketTrends of(TownId townId, String indexName, Long operateAvg, Long closeAvg, Long operateAvgBySeoul, Long closeAvgBySeoul) {
-        return MarketTrends.builder()
-                .townId(townId)
-                .indexName(indexName)
-                .operateAvg(operateAvg)
-                .closeAvg(closeAvg)
-                .operateAvgBySeoul(operateAvgBySeoul)
-                .closeAvgBySeoul(closeAvgBySeoul)
-                .build();
+        this.town = town;
     }
 }

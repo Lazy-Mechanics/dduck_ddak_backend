@@ -1,26 +1,29 @@
 package com.dduckddak.domain.town.model;
 
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EmbeddedId;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Embeddable
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Entity
 public class TownIndustry {
 
-    @EmbeddedId
-    private TownIndustryId townIndustryId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Town town;
 
-    public static TownIndustry of(TownIndustryId townIndustryId) {
-        return new TownIndustry(townIndustryId);
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Industry industry;
+
+    public TownIndustry(Long id, Industry industry, Town town) {
+        this.id = id;
+        this.industry = industry;
+        this.town = town;
     }
-
-
-
 }

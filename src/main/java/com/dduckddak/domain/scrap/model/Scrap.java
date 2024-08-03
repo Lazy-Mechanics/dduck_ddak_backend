@@ -16,6 +16,7 @@ public class Scrap {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     private TownIndustry townIndustry;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,6 +31,4 @@ public class Scrap {
     public static Scrap of(TownIndustry townIndustry, Member member) {
         return new Scrap(townIndustry, member);
     }
-
-
 }

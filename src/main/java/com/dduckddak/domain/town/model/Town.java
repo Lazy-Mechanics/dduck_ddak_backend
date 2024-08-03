@@ -11,28 +11,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Town {
 
-    @EmbeddedId
-    private TownId townId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    private Long quarter;
     private String area;
     private String name;
     private String code;
 
-    @Builder
-    public Town(TownId townId, String area, String name, String code) {
-        this.townId = townId;
+    public Town(String area, String code, String name, Long quarter) {
         this.area = area;
-        this.name = name;
         this.code = code;
+        this.name = name;
+        this.quarter = quarter;
     }
-
-    public static Town of(TownId townId, String area, String name, String code) {
-        return Town.builder()
-                .townId(townId)
-                .area(area)
-                .name(name)
-                .code(code)
-                .build();
-    }
-
 }

@@ -23,5 +23,4 @@ public enum PopulationType {
         }
         throw new IllegalArgumentException("No such PopulationType: " + name);  // 추후 Custom Exception으로 변경
     }
-
 }
