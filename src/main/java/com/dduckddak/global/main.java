@@ -1,4 +1,4 @@
-package com.dduckddak.global;서울시 행정동 json
+package com.dduckddak.global;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.parser.JSONParser;
