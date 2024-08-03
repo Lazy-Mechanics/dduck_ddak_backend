@@ -27,12 +27,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: refs/heads/main
-      - name: application-prod.yml 생성
-        env:
-          ACTIONS_STEP_DEBUG: true
-          APPLICATION_PROD: ${{ secrets.APPLICATION_PROD_YML }}
-        run: echo "$APPLICATION_PROD" > src/main/resources/application-prod.yml
-
 
       - name: jdk 17 설치
         uses: actions/setup-java@v3
