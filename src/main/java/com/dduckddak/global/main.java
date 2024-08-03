@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
@@ -25,6 +26,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Transactional
+@Profile("local")
 public class main implements ApplicationRunner {
 
     private final TownRepository townRepository;
@@ -66,7 +68,9 @@ public class main implements ApplicationRunner {
                 }
             }
         }
-        List<Town> towns = townRepository.saveAll(townList);
+        //List<Town> towns = townRepository.saveAll(townList);
+        townBulkRepository.saveAll(townList);
+        List<Town> towns = townRepository.findAll();
         log.info("행정동 끝");
 
         Reader FloatingPopulation = new FileReader("src/main/resources/json/FloatingPopulation.json");
@@ -85,7 +89,8 @@ public class main implements ApplicationRunner {
             if (industries.stream().noneMatch(n -> n.getCode().equals((String) industry.get("svc_induty_cd"))))
                 industries.add(new Industry((String) industry.get("svc_induty_cd")));
         }
-        industryRepository.saveAll(industries);
+        industryBulkRepository.saveAll(industries);
+        industries = industryRepository.findAll();
         log.info("업종 끝");
 
         /**
@@ -112,7 +117,9 @@ public class main implements ApplicationRunner {
                     .industry(industry)
                     .build());
         }
-        List<TownIndustry> townIndustries = townIndustryRepository.saveAll(townIndustryList);
+
+        townIndustryBulkRepository.saveAll(townIndustryList);
+        List<TownIndustry> townIndustries = townIndustryRepository.findAll();
 
         for (Object datum : estimateSalesData) {
             JSONObject estimate = (JSONObject) datum;
@@ -158,6 +165,7 @@ public class main implements ApplicationRunner {
         log.info("추정매출 끝");
 
         List<Finance> financeList = new ArrayList<>();
+
         /**
          * 소득소비
          */
@@ -165,7 +173,7 @@ public class main implements ApplicationRunner {
         JSONObject financeJson = (JSONObject) parser.parse(incomeConsumption);
         JSONArray financeData = (JSONArray) financeJson.get("DATA");
 
-        for (Object datum: financeData) {
+        for (Object datum : financeData) {
             JSONObject finance = (JSONObject) datum;
 
             Town town = towns.stream().filter(t -> t.getCode().equals((String) finance.get("adstrd_cd")))
@@ -193,8 +201,8 @@ public class main implements ApplicationRunner {
         log.info("소득소비 끝");
 
         /**
-          *  유동인구
-          */
+         *  유동인구
+         */
         for (Object datum : FloatingPopulationJsonData) {
             JSONObject building = (JSONObject) datum;
 
