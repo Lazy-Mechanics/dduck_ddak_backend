@@ -8,6 +8,7 @@ import com.dduckddak.global.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.dduckddak.global.ApiResponse.success;
@@ -17,11 +18,11 @@ import static com.dduckddak.global.ApiResponse.success;
 @RequestMapping("/towns/facility")
 public class FacilityController {
 
-    private FacilityService facilityService;
+    private final FacilityService facilityService;
 
-    @GetMapping()
-    public ApiResponse<FacilityDto> getFacility(String code) {
+    @GetMapping
+    public ApiResponse<FacilityDto> getFacility(@RequestParam(value = "code") String code) {
 
-        return success(facilityService.getfacility(code));
+        return success(facilityService.getFacility(code));
     }
 }
