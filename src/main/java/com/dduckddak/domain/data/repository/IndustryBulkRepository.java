@@ -18,14 +18,15 @@ public class IndustryBulkRepository {
     @Transactional
     public void saveAll(List<Industry> industries) {
         String sql = "INSERT INTO industry (" +
-                "code)" +
-                "VALUES (?)";
+                "code, name)" +
+                "VALUES (?, ?)";
 
         jdbcTemplate.batchUpdate(sql,
                 industries,
                 industries.size(),
                 (PreparedStatement pstmt, Industry industry) -> {
                     pstmt.setString(1, industry.getCode());
+                    pstmt.setString(2, industry.getName());
                 });
     }
 }
