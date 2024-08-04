@@ -1,6 +1,7 @@
 package com.dduckddak.domain.data.controller;
 
 import com.dduckddak.domain.data.dto.FloatingPopulationByQuarterDto;
+import com.dduckddak.domain.data.dto.TimelyDto;
 import com.dduckddak.domain.data.service.PopulationService;
 import com.dduckddak.global.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +22,11 @@ public class PopulationController {
     public ApiResponse<FloatingPopulationByQuarterDto> getFloatingPopulationByCodeTop5(String code) {
 
         return success(populationService.getFloatingPopulationByCodeTop5(code));
+    }
+
+    @GetMapping("/floating/time")
+    public ApiResponse<TimelyDto> getFloatingPopulationByCodeTop1(String code) {
+
+        return success(populationService.getFloatingPopulationByCodeTop1(code));
     }
 }
