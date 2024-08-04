@@ -31,9 +31,9 @@ public class SalesRepositoryImpl implements SalesRepositoryCustom{
                 .from(sales)
                 .join(sales.townIndustry, townIndustry)
                 .join(sales.townIndustry.town, town)
-                .where(town.code.eq(code))
-                .groupBy(town.quarter)
-                .orderBy(town.quarter.desc())
+                .where(sales.townIndustry.town.code.eq(code))
+                .groupBy(sales.townIndustry.town.code, sales.townIndustry.town.quarter)
+                .orderBy(sales.townIndustry.town.quarter.desc())
                 .limit(1);
         return query.fetchOne();
     }

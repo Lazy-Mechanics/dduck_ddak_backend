@@ -27,7 +27,6 @@ public record TimelyDto(
     }
 
     public static TimelyDto from(RecentlySalesDto recentlySalesDto) {
-        log.info(recentlySalesDto.getQuarter());
 
         return new TimelyDto(
                 recentlySalesDto.getHour_0_6(),
