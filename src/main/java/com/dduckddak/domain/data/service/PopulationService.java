@@ -1,5 +1,6 @@
 package com.dduckddak.domain.data.service;
 
+import com.dduckddak.domain.data.dto.PopulationByDistrictResponse;
 import com.dduckddak.domain.data.dto.PopulationByQuarterDto;
 import com.dduckddak.domain.data.dto.TimelyDto;
 import com.dduckddak.domain.data.model.Population;
@@ -34,4 +35,8 @@ public class PopulationService {
     }
 
 
+    public List<PopulationByDistrictResponse> getPopulationByDistrictTop5(String district, PopulationType populationType) {
+        List<PopulationByDistrictResponse> top5ByDistrictAndPopulationTypeOrderByQuarterDesc = populationRepository.findTop5ByDistrictAndPopulationTypeOrderByQuarterDesc(district, populationType);
+        return top5ByDistrictAndPopulationTypeOrderByQuarterDesc;
+    }
 }
