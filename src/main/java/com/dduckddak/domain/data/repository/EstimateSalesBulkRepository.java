@@ -1,6 +1,5 @@
 package com.dduckddak.domain.data.repository;
 
-import com.dduckddak.domain.data.model.Population;
 import com.dduckddak.domain.data.model.Sales;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
