@@ -35,10 +35,11 @@ public class main implements ApplicationRunner {
     private final PopulationBulkRepository populationBulkRepository;
     private final TownBulkRepository townBulkRepository;
     private final FinanceBulkRepository financeBulkRepository;
-    private final FacilityBulkRepository fiFacilityBulkRepository;
+    private final FacilityBulkRepository facilityBulkRepository;
     private final EstimateSalesBulkRepository estimateSalesBulkRepository;
     private final IndustryBulkRepository industryBulkRepository;
     private final TownIndustryBulkRepository townIndustryBulkRepository;
+    private final MarketTrendsBulkRepository marketTrendsBulkRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -92,7 +93,7 @@ public class main implements ApplicationRunner {
         for (Object datum : storeData) {
             JSONObject industry = (JSONObject) datum;
             if (industries.stream().noneMatch(n -> n.getCode().equals((String) industry.get("svc_induty_cd"))))
-                industries.add(new Industry((String) industry.get("svc_induty_cd")));
+                industries.add(new Industry((String) industry.get("svc_induty_cd"), (String) industry.get("svc_induty_cd_nm")));
         }
         industryBulkRepository.saveAll(industries);
         industries = industryRepository.findAll();
@@ -120,9 +121,10 @@ public class main implements ApplicationRunner {
             townIndustryList.add(TownIndustry.builder()
                     .town(town)
                     .industry(industry)
+                    .storeCount(parseLongFromObject(estimate.get("stor_co")))
+                    .similarStoreCount(parseLongFromObject(estimate.get("similr_induty_stor_co")))
                     .build());
         }
-
         townIndustryBulkRepository.saveAll(townIndustryList);
         List<TownIndustry> townIndustries = townIndustryRepository.findAll();
 
@@ -311,9 +313,35 @@ public class main implements ApplicationRunner {
 
             populationList.add(population);
         }
-
         populationBulkRepository.saveAll(populationList, PopulationType.WorkingPopulation);
         log.info("인구데이터 끝");
+
+        // 상권변화지표
+        Reader indicateOfCommercialChange = new FileReader("src/main/resources/json/indicators_of_commercial_change.json");
+        JSONObject indicateOfCommercialChangeJson = (JSONObject) parser.parse(indicateOfCommercialChange);
+        JSONArray indicateOfCommercialChangeData = (JSONArray) indicateOfCommercialChangeJson.get("DATA");
+
+        List<MarketTrends> marketTrendsList = new ArrayList<>();
+        for (Object datum : indicateOfCommercialChangeData) {
+            JSONObject indicateOfCommercialChangeObj = (JSONObject) datum;
+
+            Town town = towns.stream()
+                    .filter(t -> t.getCode().equals((String) indicateOfCommercialChangeObj.get("adstrd_cd")))
+                    .filter(t -> t.getQuarter().equals(Long.parseLong((String) indicateOfCommercialChangeObj.get("stdr_yyqu_cd"))))
+                    .findFirst().orElseThrow();
+
+            marketTrendsList.add(MarketTrends.builder()
+                    .town(town)
+                    .tradeAreaChangeIndex((String) indicateOfCommercialChangeObj.get("trdar_chnge_ix"))
+                    .areaChangeIndexName((String) indicateOfCommercialChangeObj.get("trdar_chnge_ix_nm"))
+                    .operateSaleAvg(parseLongFromObject(indicateOfCommercialChangeObj.get("opr_sale_mt_avrg")))
+                    .closeSaleAvg(parseLongFromObject(indicateOfCommercialChangeObj.get("cls_sale_mt_avrg")))
+                    .operateSaleAvgBySeoul(parseLongFromObject(indicateOfCommercialChangeObj.get("su_opr_sale_mt_avrg")))
+                    .closeSaleAvgBySeoul(parseLongFromObject(indicateOfCommercialChangeObj.get("su_cls_sale_mt_avrg")))
+                    .build());
+        }
+        marketTrendsBulkRepository.saveAll(marketTrendsList);
+        log.info("상권변화지표 끝");
 
         // 집객시설
         Reader attractingCustomersPopulation = new FileReader("src/main/resources/json/facility.json");
@@ -354,8 +382,7 @@ public class main implements ApplicationRunner {
 
             facilityList.add(facility);
         }
-
-        fiFacilityBulkRepository.saveAll(facilityList);
+        facilityBulkRepository.saveAll(facilityList);
         log.info("끝");
     }
 

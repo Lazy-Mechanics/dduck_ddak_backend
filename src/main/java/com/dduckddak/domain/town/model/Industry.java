@@ -18,8 +18,10 @@ public class Industry {
     private Long id;
 
     private String code;
+    private String name;
 
-    public Industry(String code) {
+    public Industry(String code, String name) {
         this.code = code;
+        this.name = name;
     }
 }

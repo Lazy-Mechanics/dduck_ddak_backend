@@ -3,6 +3,7 @@ package com.dduckddak.domain.data.model;
 import com.dduckddak.domain.town.model.Town;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,26 +12,39 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MarketTrends {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     private Town town;
 
-    private String indexName; //지표명
-    private Long operateAvg;
-    private Long closeAvg;
-    private Long operateAvgBySeoul;
-    private Long closeAvgBySeoul;
+    // 상품 변화 지표
+    private String tradeAreaChangeIndex;
 
-    public MarketTrends(Long closeAvg, Long closeAvgBySeoul, Long id, String indexName, Long operateAvg, Long operateAvgBySeoul, Town town) {
-        this.closeAvg = closeAvg;
-        this.closeAvgBySeoul = closeAvgBySeoul;
-        this.id = id;
-        this.indexName = indexName;
-        this.operateAvg = operateAvg;
-        this.operateAvgBySeoul = operateAvgBySeoul;
+    // 상권 변화 지표 명
+    private String areaChangeIndexName;
+
+    // 운영 엽업 개월 평균
+    private Long operateSaleAvg;
+
+    // 폐업 영업 개월 평균
+    private Long closeSaleAvg;
+
+    // 운영 영업 개월 평균(서울)
+    private Long operateSaleAvgBySeoul;
+
+    // 폐업 영업 개월 평균(서울)
+    private Long closeSaleAvgBySeoul;
+
+    @Builder
+    public MarketTrends(Town town, String tradeAreaChangeIndex, String areaChangeIndexName, Long operateSaleAvg,
+                        Long closeSaleAvg, Long operateSaleAvgBySeoul, Long closeSaleAvgBySeoul) {
         this.town = town;
+        this.tradeAreaChangeIndex = tradeAreaChangeIndex;
+        this.areaChangeIndexName = areaChangeIndexName;
+        this.operateSaleAvg = operateSaleAvg;
+        this.closeSaleAvg = closeSaleAvg;
+        this.operateSaleAvgBySeoul = operateSaleAvgBySeoul;
+        this.closeSaleAvgBySeoul = closeSaleAvgBySeoul;
     }
 }

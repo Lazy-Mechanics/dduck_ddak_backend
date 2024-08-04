@@ -21,10 +21,15 @@ public class TownIndustry {
     @ManyToOne(fetch = FetchType.LAZY)
     private Industry industry;
 
+    private Long storeCount;
+    private Long similarStoreCount;
+
     @Builder
-    public TownIndustry(long id, Industry industry, Town town) {
+    public TownIndustry(long id, Industry industry, Town town, Long storeCount, Long similarStoreCount) {
         this.id = id;
         this.industry = industry;
         this.town = town;
+        this.storeCount = storeCount;
+        this.similarStoreCount = similarStoreCount;
     }
 }
