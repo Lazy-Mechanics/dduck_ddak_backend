@@ -44,6 +44,11 @@ public class main implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         log.info("시작");
 
+        if (townRepository.count() > 0) {
+            log.info("데이터가 이미 존재합니다.");
+            return;
+        }
+
         // JSON 파일 읽기
         JSONParser parser = new JSONParser();
 
