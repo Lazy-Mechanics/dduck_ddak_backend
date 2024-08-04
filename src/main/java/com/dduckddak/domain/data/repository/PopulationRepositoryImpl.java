@@ -7,6 +7,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.dduckddak.domain.data.model.QPopulation.population;
 import static com.dduckddak.domain.town.model.QTown.town;
@@ -27,4 +28,18 @@ public class PopulationRepositoryImpl implements PopulationRepositoryCustom{
                 .limit(5);
         return query.fetch();
     }
+
+    @Override
+    public Optional<Population> findTop1ByTownCodeAndPopulationTypeOrderByQuarterDesc(String code, PopulationType populationType) {
+        JPAQuery<Population> query = queryFactory
+                .selectFrom(population)
+                .join(population.town, town).fetchJoin()
+                .where(town.code.eq(code)
+                        .and(population.populationType.eq(populationType)))
+                .orderBy(town.quarter.desc())
+                .limit(1);
+        return Optional.ofNullable(query.fetchOne());
+    }
+
+
 }
