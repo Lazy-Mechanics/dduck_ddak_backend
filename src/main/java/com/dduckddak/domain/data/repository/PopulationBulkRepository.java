@@ -63,8 +63,8 @@ public class PopulationBulkRepository {
         String sql = "INSERT INTO population (" +
                 "population_type, total_population, men_population, women_population, " +
                 "age10s_population, age20s_population, age30s_population, age40s_population, " +
-                "age50s_population, age60s_and_more_population) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "age50s_population, age60s_and_more_population, town_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql,
                 populationList,
@@ -80,6 +80,7 @@ public class PopulationBulkRepository {
                     ps.setLong(8, population.getAge40sPopulation());
                     ps.setLong(9, population.getAge50sPopulation());
                     ps.setLong(10, population.getAge60sAndMorePopulation());
+                    ps.setLong(11, population.getTown().getId());
                 });
     }
 }

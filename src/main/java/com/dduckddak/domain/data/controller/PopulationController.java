@@ -8,6 +8,7 @@ import com.dduckddak.global.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.dduckddak.global.ApiResponse.success;
@@ -20,15 +21,15 @@ public class PopulationController {
     private final PopulationService populationService;
 
     @GetMapping("/floating/quarter")
-    public ApiResponse<PopulationByQuarterDto> getFloatingPopulationByCodeTop5(String code) {
+    public ApiResponse<PopulationByQuarterDto> getFloatingPopulationByCodeTop5(@RequestParam(value = "code") String code) {
         return success(populationService.getPopulationByCodeTop5(code, PopulationType.FloatingPopulation));
     }
     @GetMapping("/resident/quarter")
-    public ApiResponse<PopulationByQuarterDto> getResidentPopulationByCodeTop5(String code) {
+    public ApiResponse<PopulationByQuarterDto> getResidentPopulationByCodeTop5(@RequestParam(value = "code") String code) {
         return success(populationService.getPopulationByCodeTop5(code, PopulationType.ResidentPopulation));
     }
     @GetMapping("/working/quarter")
-    public ApiResponse<PopulationByQuarterDto> getWorkingPopulationByCodeTop5(String code) {
+    public ApiResponse<PopulationByQuarterDto> getWorkingPopulationByCodeTop5(@RequestParam(value = "code") String code) {
         return success(populationService.getPopulationByCodeTop5(code, PopulationType.WorkingPopulation));
     }
 

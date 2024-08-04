@@ -47,7 +47,7 @@ public class Population {
     private Long age50sPopulation;
     private Long age60sAndMorePopulation;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Town town;
 
     @Builder

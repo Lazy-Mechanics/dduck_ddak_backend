@@ -285,7 +285,7 @@ public class main implements ApplicationRunner {
         /**
          * 직장인구
          */
-        Reader workingPopulation = new FileReader("src/main/resources/json/finance.json");
+        Reader workingPopulation = new FileReader("src/main/resources/json/workingPopulation.json");
         JSONObject workingPopulationJson = (JSONObject) parser.parse(workingPopulation);
         JSONArray workingPopulationData = (JSONArray) workingPopulationJson.get("DATA");
 
