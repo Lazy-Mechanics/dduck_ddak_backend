@@ -4,7 +4,7 @@ import com.dduckddak.domain.data.model.Population;
 
 import java.util.List;
 
-public record FloatingPopulationByQuarterDto(
+public record PopulationByQuarterDto(
         List<QuarterPopulationDto> populationList
 ) {
     public record QuarterPopulationDto(
@@ -19,8 +19,8 @@ public record FloatingPopulationByQuarterDto(
         }
     }
 
-    public static FloatingPopulationByQuarterDto from(List<Population> populations) {
-        return new FloatingPopulationByQuarterDto(
+    public static PopulationByQuarterDto from(List<Population> populations) {
+        return new PopulationByQuarterDto(
                 populations.stream().map(QuarterPopulationDto::from).toList()
         );
     }

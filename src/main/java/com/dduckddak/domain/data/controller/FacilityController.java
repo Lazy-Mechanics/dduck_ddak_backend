@@ -2,7 +2,6 @@ package com.dduckddak.domain.data.controller;
 
 
 import com.dduckddak.domain.data.dto.FacilityDto;
-import com.dduckddak.domain.data.dto.FloatingPopulationByQuarterDto;
 import com.dduckddak.domain.data.service.FacilityService;
 import com.dduckddak.global.ApiResponse;
 import lombok.RequiredArgsConstructor;
