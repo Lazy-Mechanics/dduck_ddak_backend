@@ -3,6 +3,7 @@ package com.dduckddak.domain.town.controller;
 import com.dduckddak.domain.data.dto.MarketTrendsResponse;
 import com.dduckddak.domain.town.dto.RecentlyTownIndustryDto;
 import com.dduckddak.domain.town.dto.SimilarTownIndustryDto;
+import com.dduckddak.domain.town.service.SalesResponse;
 import com.dduckddak.domain.town.service.TownIndustryService;
 import com.dduckddak.global.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -48,5 +49,4 @@ public class TownIndustryController {
             @RequestParam(value = "name") String name) {
         return success(townIndustryService.getIndustriesSales(code, name));
     }
-
 }

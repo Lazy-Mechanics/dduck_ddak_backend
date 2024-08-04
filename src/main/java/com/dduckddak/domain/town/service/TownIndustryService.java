@@ -2,6 +2,7 @@ package com.dduckddak.domain.town.service;
 
 import com.dduckddak.domain.data.dto.MarketTrendsResponse;
 import com.dduckddak.domain.data.model.MarketTrends;
+import com.dduckddak.domain.data.model.Sales;
 import com.dduckddak.domain.data.repository.MarketTrendRepository;
 import com.dduckddak.domain.data.repository.sales.SalesRepository;
 import com.dduckddak.domain.town.dto.RecentlyTownIndustryDto;
@@ -35,7 +36,7 @@ public class TownIndustryService {
     }
 
     public SalesResponse getIndustriesSales(int code, String name) {
-        salesRepository.findByTownAndIndustry(code, name);
-        return null;
+        Sales sales = salesRepository.findByTownAndIndustry(code, name);
+        return SalesResponse.of(sales);
     }
 }

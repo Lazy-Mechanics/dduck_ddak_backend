@@ -27,4 +27,19 @@ public class SalesRepositoryImpl implements SalesRepositoryCustom{
                 .limit(1);
         return Optional.ofNullable(query.fetchOne());
     }
+
+    @Override
+    public Sales findByTownAndIndustry(int code, String name) {
+        return queryFactory
+                .selectFrom(sales)
+                .join(sales.townIndustry, townIndustry).fetchJoin()
+                .join(sales.townIndustry.town, town).fetchJoin()
+                .where(
+                        town.code.eq(String.valueOf(code)),
+                        townIndustry.industry.name.eq(name),
+                        town.quarter.eq(20241L)
+                )
+                .orderBy(town.quarter.desc())
+                .fetchOne();
+    }
 }
