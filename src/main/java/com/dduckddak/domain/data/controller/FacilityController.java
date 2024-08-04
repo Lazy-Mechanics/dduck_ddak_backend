@@ -1,6 +1,7 @@
 package com.dduckddak.domain.data.controller;
 
 
+import com.dduckddak.domain.data.dto.FacilityByDistrictResponse;
 import com.dduckddak.domain.data.dto.FacilityDto;
 import com.dduckddak.domain.data.service.FacilityService;
 import com.dduckddak.global.ApiResponse;
@@ -23,5 +24,10 @@ public class FacilityController {
     public ApiResponse<FacilityDto> getFacility(@RequestParam(value = "code") String code) {
 
         return success(facilityService.getFacility(code));
+    }
+    @GetMapping("/district")
+    public ApiResponse<FacilityByDistrictResponse> getFacilityByDistrict(@RequestParam(value = "name") String name) {
+
+        return success(facilityService.getFacilityByDistrict(name));
     }
 }

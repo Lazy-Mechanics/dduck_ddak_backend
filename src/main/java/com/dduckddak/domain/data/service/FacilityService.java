@@ -1,5 +1,6 @@
 package com.dduckddak.domain.data.service;
 
+import com.dduckddak.domain.data.dto.FacilityByDistrictResponse;
 import com.dduckddak.domain.data.dto.FacilityDto;
 import com.dduckddak.domain.data.model.Facility;
 import com.dduckddak.domain.data.repository.FacilityRepository;
@@ -15,5 +16,9 @@ public class FacilityService {
     public FacilityDto getFacility(String code) {
         Facility facility = facilityRepository.findByTownCodeAndQuarter(code);
         return FacilityDto.of(facility);
+    }
+
+    public FacilityByDistrictResponse getFacilityByDistrict(String name) {
+        return facilityRepository.findRecentByDistrict(name);
     }
 }

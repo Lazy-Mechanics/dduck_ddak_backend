@@ -17,7 +17,7 @@ public class FacilityDto {
     private Long departmentStore; // 백화점
     private Long schoolCnt; // 학교
     private Long accommodationFacilityCnt; // 숙박
-    private Long TransportationFacilityCnt; // 교통
+    private Long transportationFacilityCnt; // 교통
 
     public static FacilityDto of(Facility facility){
         return FacilityDto.builder()
@@ -28,7 +28,7 @@ public class FacilityDto {
                 .departmentStore(facility.getDepartmentStoreCnt())
                 .schoolCnt(facility.getElementarySchoolCnt() + facility.getHighSchoolCnt() + facility.getMiddleSchoolCnt())
                 .accommodationFacilityCnt(facility.getAccommodationFacilityCnt())
-                .TransportationFacilityCnt(facility.getAirportCnt() + facility.getBusStopCnt() + facility.getSubwayStationCnt())
+                .transportationFacilityCnt(facility.getAirportCnt() + facility.getBusStopCnt() + facility.getSubwayStationCnt())
                 .build();
     }
 
