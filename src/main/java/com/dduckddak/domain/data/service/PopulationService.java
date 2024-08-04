@@ -22,7 +22,7 @@ public class PopulationService {
 
     //동 코드를 입력 받으면 분기별 유동인구를 반환
     public FloatingPopulationByQuarterDto getFloatingPopulationByCodeTop5(String code) {
-        List<Population> populations = populationRepository.findTop5ByTownCodeAAndPopulationTypeOrderByQuarterDesc(code, PopulationType.FloatingPopulation);
+        List<Population> populations = populationRepository.findTop5ByTownCodeAndPopulationTypeOrderByQuarterDesc(code, PopulationType.FloatingPopulation);
         return FloatingPopulationByQuarterDto.from(populations);
     }
 }
