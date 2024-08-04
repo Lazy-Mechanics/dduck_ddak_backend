@@ -5,14 +5,17 @@ import com.dduckddak.domain.data.model.MarketTrends;
 import com.dduckddak.domain.data.model.Sales;
 import com.dduckddak.domain.data.repository.MarketTrendRepository;
 import com.dduckddak.domain.data.repository.sales.SalesRepository;
-import com.dduckddak.domain.town.dto.RecentlyTownIndustryDto;
+import com.dduckddak.domain.town.dto.RecentlyTownIndustryResponse;
 import com.dduckddak.domain.town.dto.SimilarTownIndustryDto;
 import com.dduckddak.domain.town.repository.TownIndustryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,8 +25,12 @@ public class TownIndustryService {
     private final MarketTrendRepository marketTrendRepository;
     private final SalesRepository salesRepository;
 
-    public List<RecentlyTownIndustryDto> getRecentlyIndustries(int code, String name) {
+    public List<RecentlyTownIndustryResponse> getRecentlyIndustries(int code, String name) {
         return townIndustryRepository.findTownIndustryByTownCodeAndQuarterAndName(code, name);
+    }
+
+    public List<RecentlyTownIndustryResponse> getRecentlyIndustriesInDistrict(String district, String name) {
+        return townIndustryRepository.findTownIndustryByTownCodeAndQuarterAndNameInDistrict(district, name);
     }
 
     public List<SimilarTownIndustryDto> getSimilarIndustries(int code, String name) {

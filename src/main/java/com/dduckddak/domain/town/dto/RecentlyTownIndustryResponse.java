@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecentlyTownIndustryDto {
+public class RecentlyTownIndustryResponse {
     private String quarter;
     private String count;
 
     @QueryProjection
-    public RecentlyTownIndustryDto(String quarter, String count) {
+    public RecentlyTownIndustryResponse(String quarter, String count) {
         this.quarter = quarter;
         this.count = count;
     }

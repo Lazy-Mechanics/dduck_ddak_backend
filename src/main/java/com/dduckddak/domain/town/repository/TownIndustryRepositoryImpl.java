@@ -1,17 +1,17 @@
 package com.dduckddak.domain.town.repository;
 
-import com.dduckddak.domain.town.dto.QRecentlyTownIndustryDto;
+import com.dduckddak.domain.town.dto.QRecentlyTownIndustryResponse;
 import com.dduckddak.domain.town.dto.QSimilarTownIndustryDto;
-import com.dduckddak.domain.town.dto.RecentlyTownIndustryDto;
+import com.dduckddak.domain.town.dto.RecentlyTownIndustryResponse;
 import com.dduckddak.domain.town.dto.SimilarTownIndustryDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
 
-import static com.dduckddak.domain.town.model.QIndustry.*;
-import static com.dduckddak.domain.town.model.QTown.*;
-import static com.dduckddak.domain.town.model.QTownIndustry.*;
+import static com.dduckddak.domain.town.model.QIndustry.industry;
+import static com.dduckddak.domain.town.model.QTown.town;
+import static com.dduckddak.domain.town.model.QTownIndustry.townIndustry;
 
 public class TownIndustryRepositoryImpl implements TownIndustryRepositoryCustom {
     private final JPAQueryFactory queryFactory;
@@ -20,9 +20,9 @@ public class TownIndustryRepositoryImpl implements TownIndustryRepositoryCustom 
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public List<RecentlyTownIndustryDto> findTownIndustryByTownCodeAndQuarterAndName(int code, String name) {
+    public List<RecentlyTownIndustryResponse> findTownIndustryByTownCodeAndQuarterAndName(int code, String name) {
         return queryFactory
-                .select(new QRecentlyTownIndustryDto(
+                .select(new QRecentlyTownIndustryResponse(
                         town.quarter.stringValue(),
                         townIndustry.storeCount.stringValue()
                 )).distinct()
@@ -35,6 +35,25 @@ public class TownIndustryRepositoryImpl implements TownIndustryRepositoryCustom 
                 )
                 .orderBy(town.quarter.stringValue().desc())
                 .limit(5)
+                .fetch();
+    }
+
+    @Override
+    public List<RecentlyTownIndustryResponse> findTownIndustryByTownCodeAndQuarterAndNameInDistrict(String district, String name) {
+        return queryFactory
+                .select(new QRecentlyTownIndustryResponse(
+                        town.quarter.stringValue(),
+                        townIndustry.storeCount.sum().stringValue()
+                ))
+                .from(townIndustry)
+                .join(townIndustry.town, town)
+                .join(townIndustry.industry, industry)
+                .where(
+                        town.name.contains(district),
+                        industry.name.eq(name)
+                )
+                .groupBy(town.quarter)
+                .orderBy(town.quarter.desc())
                 .fetch();
     }
 

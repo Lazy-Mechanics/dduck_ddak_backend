@@ -1,7 +1,7 @@
 package com.dduckddak.domain.town.controller;
 
 import com.dduckddak.domain.data.dto.MarketTrendsResponse;
-import com.dduckddak.domain.town.dto.RecentlyTownIndustryDto;
+import com.dduckddak.domain.town.dto.RecentlyTownIndustryResponse;
 import com.dduckddak.domain.town.dto.SimilarTownIndustryDto;
 import com.dduckddak.domain.town.service.SalesResponse;
 import com.dduckddak.domain.town.service.TownIndustryService;
@@ -23,10 +23,17 @@ public class TownIndustryController {
     private final TownIndustryService townIndustryService;
 
     @GetMapping("/recently")
-    public ApiResponse<List<RecentlyTownIndustryDto>> getRecentlyIndustries(
+    public ApiResponse<List<RecentlyTownIndustryResponse>> getRecentlyIndustries(
             @RequestParam(value = "code") int code,
             @RequestParam(value = "name") String name) {
         return success(townIndustryService.getRecentlyIndustries(code, name));
+    }
+
+    @GetMapping("/recently-district")
+    public ApiResponse<List<RecentlyTownIndustryResponse>> getRecentlyIndustriesInDistrict(
+            @RequestParam(value = "district") String district,
+            @RequestParam(value = "name") String name) {
+        return success(townIndustryService.getRecentlyIndustriesInDistrict(district, name));
     }
 
     @GetMapping("/similar")
