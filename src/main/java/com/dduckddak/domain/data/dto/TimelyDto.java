@@ -1,7 +1,8 @@
 package com.dduckddak.domain.data.dto;
 
 import com.dduckddak.domain.data.model.Population;
-import com.dduckddak.domain.data.model.Sales;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public record TimelyDto(
         Long hour_0_6,
@@ -11,6 +12,8 @@ public record TimelyDto(
         Long hour_17_21,
         Long hour_21_24
 ) {
+
+    private static final Logger log = LoggerFactory.getLogger(TimelyDto.class);
 
     public static TimelyDto from(Population population) {
         return new TimelyDto(
@@ -23,14 +26,16 @@ public record TimelyDto(
         );
     }
 
-    public static TimelyDto from(Sales sales) {
+    public static TimelyDto from(RecentlySalesDto recentlySalesDto) {
+        log.info(recentlySalesDto.getQuarter());
+
         return new TimelyDto(
-                sales.getHour_0_6(),
-                sales.getHour_6_11(),
-                sales.getHour_11_14(),
-                sales.getHour_14_17(),
-                sales.getHour_17_21(),
-                sales.getHour_21_24()
+                recentlySalesDto.getHour_0_6(),
+                recentlySalesDto.getHour_6_11(),
+                recentlySalesDto.getHour_11_14(),
+                recentlySalesDto.getHour_14_17(),
+                recentlySalesDto.getHour_17_21(),
+                recentlySalesDto.getHour_21_24()
         );
     }
 }
