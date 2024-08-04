@@ -21,8 +21,8 @@ public class TownIndustryBulkRepository {
     public void saveAll(List<TownIndustry> townIndustryList){
 
         String sql = "INSERT INTO town_industry (" +
-                "industry_id, town_id) " +
-                "VALUES (?, ?)";
+                "industry_id, town_id, store_count, similar_store_count) " +
+                "VALUES (?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql,
                 townIndustryList,
@@ -30,7 +30,8 @@ public class TownIndustryBulkRepository {
                 (PreparedStatement ps, TownIndustry townIndustry) -> {
                     ps.setLong(1, townIndustry.getIndustry().getId());
                     ps.setLong(2, townIndustry.getTown().getId());
+                    ps.setLong(3, townIndustry.getStoreCount());
+                    ps.setLong(4, townIndustry.getSimilarStoreCount());
                 });
-
     }
 }

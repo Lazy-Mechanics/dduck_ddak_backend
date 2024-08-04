@@ -102,13 +102,17 @@ public class main implements ApplicationRunner {
         /**
          * 추정 매출 데이터
          */
+        Reader stores = new FileReader("src/main/resources/json/store.json");
+        JSONObject storeJson = (JSONObject) parser.parse(stores);
+        JSONArray storeDatas = (JSONArray) storeJson.get("DATA");
+
         Reader estimateSales = new FileReader("src/main/resources/json/estimatedSales.json");
         JSONObject estimateSalesJson = (JSONObject) parser.parse(estimateSales);
         JSONArray estimateSalesData = (JSONArray) estimateSalesJson.get("DATA");
 
         List<Sales> sales = new ArrayList<>();
         List<TownIndustry> townIndustryList = new ArrayList<>();
-        for (Object datum : estimateSalesData) {
+        for (Object datum : storeDatas) {
             JSONObject estimate = (JSONObject) datum;
 
             Town town = towns.stream().filter(t -> t.getCode().equals((String) estimate.get("adstrd_cd")))
