@@ -16,8 +16,8 @@ public class SalesController {
     private final SalesService salesService;
 
     @GetMapping("/time")
-    public ApiResponse<TimelyDto> getSalesByCodeTop1(String code) {
-        return ApiResponse.success(salesService.getSalesByCodeTop1(code));
+    public ApiResponse<TimelyDto> getSalesByCode(String code) {
+        return ApiResponse.success(salesService.getSalesByCode(code));
     }
 
 }
