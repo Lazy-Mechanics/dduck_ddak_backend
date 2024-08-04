@@ -42,6 +42,11 @@ public class TownIndustryController {
         return success(townIndustryService.getIndustriesBusinessPeriod(code, quarter));
     }
 
-
+    @GetMapping("/sales")
+    public ApiResponse<SalesResponse> getIndustriesSales(
+            @RequestParam(value = "code") int code,
+            @RequestParam(value = "name") String name) {
+        return success(townIndustryService.getIndustriesSales(code, name));
+    }
 
 }

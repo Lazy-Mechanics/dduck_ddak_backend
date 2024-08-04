@@ -32,4 +32,9 @@ public class TownIndustryService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 지역의 데이터가 존재하지 않습니다."));
         return new MarketTrendsResponse(marketTrends.getOperateSaleAvg());
     }
+
+    public SalesResponse getIndustriesSales(int code, String name) {
+        salesRepository.findByTownAndIndustry(code, name);
+        return null;
+    }
 }
