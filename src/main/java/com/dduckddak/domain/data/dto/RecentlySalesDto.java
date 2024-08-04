@@ -18,14 +18,13 @@ public class RecentlySalesDto {
     private Long hour_21_24;
 
     @QueryProjection
-
-    public RecentlySalesDto(Long hour_0_6, Long hour_11_14, Long hour_14_17, Long hour_17_21, Long hour_21_24, Long hour_6_11, String quarter) {
+    public RecentlySalesDto(Long hour_0_6, Long hour_6_11, Long hour_11_14, Long hour_14_17, Long hour_17_21, Long hour_21_24,  String quarter) {
         this.hour_0_6 = hour_0_6;
+        this.hour_6_11 = hour_6_11;
         this.hour_11_14 = hour_11_14;
         this.hour_14_17 = hour_14_17;
         this.hour_17_21 = hour_17_21;
         this.hour_21_24 = hour_21_24;
-        this.hour_6_11 = hour_6_11;
         this.quarter = quarter;
     }
 }
