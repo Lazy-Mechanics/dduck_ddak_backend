@@ -7,13 +7,14 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 import static com.dduckddak.domain.data.model.QSales.sales;
 import static com.dduckddak.domain.town.model.QTown.town;
 import static com.dduckddak.domain.town.model.QTownIndustry.townIndustry;
 
 @RequiredArgsConstructor
 public class SalesRepositoryImpl implements SalesRepositoryCustom{
-
     private final JPAQueryFactory queryFactory;
 
     @Override
@@ -51,6 +52,21 @@ public class SalesRepositoryImpl implements SalesRepositoryCustom{
                 )
                 .orderBy(town.quarter.desc())
                 .fetchOne();
+    }
+
+    @Override
+    public List<Sales> findByTownAndIndustryInDistrict(String district, String name) {
+        return queryFactory
+                .selectFrom(sales)
+                .join(sales.townIndustry, townIndustry).fetchJoin()
+                .join(sales.townIndustry.town, town).fetchJoin()
+                .where(
+                        town.name.contains(district),
+                        townIndustry.industry.name.eq(name),
+                        town.quarter.eq(20241L)
+                )
+                .orderBy(town.quarter.desc())
+                .fetch();
     }
 
 }

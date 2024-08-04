@@ -9,4 +9,5 @@ public interface TownIndustryRepositoryCustom {
     List<RecentlyTownIndustryResponse> findTownIndustryByTownCodeAndQuarterAndName(int code, String name);
     List<RecentlyTownIndustryResponse> findTownIndustryByTownCodeAndQuarterAndNameInDistrict(String district, String name);
     List<SimilarTownIndustryDto> findSimilarTownIndustryByTownCodeAndQuarterAndName(int code, String name);
+    List<SimilarTownIndustryDto> findSimilarTownIndustryByTownCodeAndQuarterAndNameInDistrict(String district, String name);
 }

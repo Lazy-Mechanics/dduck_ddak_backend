@@ -6,16 +6,15 @@ import com.dduckddak.domain.data.model.Sales;
 import com.dduckddak.domain.data.repository.MarketTrendRepository;
 import com.dduckddak.domain.data.repository.sales.SalesRepository;
 import com.dduckddak.domain.town.dto.RecentlyTownIndustryResponse;
+import com.dduckddak.domain.town.dto.SalesResponse;
 import com.dduckddak.domain.town.dto.SimilarTownIndustryDto;
+import com.dduckddak.domain.town.model.TownIndustry;
 import com.dduckddak.domain.town.repository.TownIndustryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,13 +36,58 @@ public class TownIndustryService {
         return townIndustryRepository.findSimilarTownIndustryByTownCodeAndQuarterAndName(code, name);
     }
 
+    public List<SimilarTownIndustryDto> getSimilarIndustriesInDistrict(String district, String name) {
+        return townIndustryRepository.findSimilarTownIndustryByTownCodeAndQuarterAndNameInDistrict(district, name);
+    }
+
     public MarketTrendsResponse getIndustriesBusinessPeriod(int code, int quarter) {
         MarketTrends marketTrends = marketTrendRepository.findMarketTrendsByTownCodeAndQuarter(code, quarter);
         return new MarketTrendsResponse(marketTrends.getOperateSaleAvg());
     }
 
+    public MarketTrendsResponse getIndustriesBusinessPeriodInDistrict(String district, int quarter) {
+        List<MarketTrends> marketTrendsList = marketTrendRepository.findMarketTrendsByTownCodeAndQuarterInDistrict(district, quarter);
+        // average of operateSaleAvg
+        Long operateSaleAvg = (long) marketTrendsList.stream()
+                .mapToDouble(MarketTrends::getOperateSaleAvg)
+                .average()
+                .orElse(0);
+        return new MarketTrendsResponse(operateSaleAvg);
+    }
+
     public SalesResponse getIndustriesSales(int code, String name) {
         Sales sales = salesRepository.findByTownAndIndustry(code, name);
         return SalesResponse.of(sales);
+    }
+
+    public SalesResponse getIndustriesSalesInDistrict(String district, String name) {
+        List<Sales> sales = salesRepository.findByTownAndIndustryInDistrict(district, name);
+        return SalesResponse.of(new Sales(
+                (long) sales.stream().mapToLong(Sales::getCurrentMonthlySales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getMondaySales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getTuesdaySales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getWednesdaySales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getThursdaySales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getFridaySales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getSaturdaySales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getSundaySales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getWeekdaySales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getWeekendSales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getHour_0_6).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getHour_6_11).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getHour_11_14).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getHour_14_17).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getHour_17_21).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getHour_21_24).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getMenSales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getWomenSales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getAge10sSales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getAge20sSales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getAge30sSales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getAge40sSales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getAge50sSales).average().orElse(0),
+                (long) sales.stream().mapToLong(Sales::getAge60sAndMoreSales).average().orElse(0),
+                sales.get(0).getTownIndustry()
+        ));
     }
 }

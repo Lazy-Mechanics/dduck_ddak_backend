@@ -1,13 +1,12 @@
 package com.dduckddak.domain.data.repository;
 
 import com.dduckddak.domain.data.model.MarketTrends;
-import com.dduckddak.domain.data.model.QMarketTrends;
-import com.dduckddak.domain.town.model.QTown;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 
-import static com.dduckddak.domain.data.model.QMarketTrends.*;
-import static com.dduckddak.domain.town.model.QTown.*;
+import java.util.List;
+
+import static com.dduckddak.domain.data.model.QMarketTrends.marketTrends;
 
 public class MarketTrendRepositoryImpl implements MarketTrendRepositoryCustom {
     private final JPAQueryFactory queryFactory;
@@ -26,5 +25,16 @@ public class MarketTrendRepositoryImpl implements MarketTrendRepositoryCustom {
                         marketTrends.town.quarter.eq((long) quarter)
                 )
                 .fetchOne();
+    }
+
+    @Override
+    public List<MarketTrends> findMarketTrendsByTownCodeAndQuarterInDistrict(String district, int quarter) {
+        return queryFactory
+                .selectFrom(marketTrends)
+                .where(
+                        marketTrends.town.name.contains(district),
+                        marketTrends.town.quarter.eq((long) quarter)
+                )
+                .fetch();
     }
 }

@@ -3,7 +3,7 @@ package com.dduckddak.domain.town.controller;
 import com.dduckddak.domain.data.dto.MarketTrendsResponse;
 import com.dduckddak.domain.town.dto.RecentlyTownIndustryResponse;
 import com.dduckddak.domain.town.dto.SimilarTownIndustryDto;
-import com.dduckddak.domain.town.service.SalesResponse;
+import com.dduckddak.domain.town.dto.SalesResponse;
 import com.dduckddak.domain.town.service.TownIndustryService;
 import com.dduckddak.global.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +43,13 @@ public class TownIndustryController {
         return success(townIndustryService.getSimilarIndustries(code, name));
     }
 
+    @GetMapping("/similar-district")
+    public ApiResponse<List<SimilarTownIndustryDto>> getSimilarIndustriesInDistrict(
+            @RequestParam(value = "district") String district,
+            @RequestParam(value = "name") String name) {
+        return success(townIndustryService.getSimilarIndustriesInDistrict(district, name));
+    }
+
     @GetMapping("/business-period")
     public ApiResponse<MarketTrendsResponse> getIndustriesBusinessPeriod(
             @RequestParam(value = "code") int code,
@@ -50,10 +57,24 @@ public class TownIndustryController {
         return success(townIndustryService.getIndustriesBusinessPeriod(code, quarter));
     }
 
+    @GetMapping("/business-period-district")
+    public ApiResponse<MarketTrendsResponse> getIndustriesBusinessPeriodInDistrict(
+            @RequestParam(value = "district") String district,
+            @RequestParam(value = "quarter") int quarter) {
+        return success(townIndustryService.getIndustriesBusinessPeriodInDistrict(district, quarter));
+    }
+
     @GetMapping("/sales")
     public ApiResponse<SalesResponse> getIndustriesSales(
             @RequestParam(value = "code") int code,
             @RequestParam(value = "name") String name) {
         return success(townIndustryService.getIndustriesSales(code, name));
+    }
+
+    @GetMapping("/sales-district")
+    public ApiResponse<SalesResponse> getIndustriesSalesInDistrict(
+            @RequestParam(value = "district") String district,
+            @RequestParam(value = "name") String name) {
+        return success(townIndustryService.getIndustriesSalesInDistrict(district, name));
     }
 }

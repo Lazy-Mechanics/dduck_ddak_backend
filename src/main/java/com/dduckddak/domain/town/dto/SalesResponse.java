@@ -1,4 +1,4 @@
-package com.dduckddak.domain.town.service;
+package com.dduckddak.domain.town.dto;
 
 import com.dduckddak.domain.data.model.Sales;
 import lombok.Builder;

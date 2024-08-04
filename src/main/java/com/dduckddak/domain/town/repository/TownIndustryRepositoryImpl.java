@@ -24,8 +24,8 @@ public class TownIndustryRepositoryImpl implements TownIndustryRepositoryCustom 
         return queryFactory
                 .select(new QRecentlyTownIndustryResponse(
                         town.quarter.stringValue(),
-                        townIndustry.storeCount.stringValue()
-                )).distinct()
+                        townIndustry.storeCount.sum().stringValue()
+                ))
                 .from(townIndustry)
                 .join(townIndustry.town, town)
                 .join(townIndustry.industry, industry)
@@ -33,6 +33,7 @@ public class TownIndustryRepositoryImpl implements TownIndustryRepositoryCustom 
                         town.code.eq(String.valueOf(code)),
                         industry.name.eq(name)
                 )
+                .groupBy(town.quarter)
                 .orderBy(town.quarter.stringValue().desc())
                 .limit(5)
                 .fetch();
@@ -61,8 +62,8 @@ public class TownIndustryRepositoryImpl implements TownIndustryRepositoryCustom 
         return queryFactory
                 .select(new QSimilarTownIndustryDto(
                         town.quarter.stringValue(),
-                        townIndustry.similarStoreCount.stringValue()
-                )).distinct()
+                        townIndustry.similarStoreCount.sum().stringValue()
+                ))
                 .from(townIndustry)
                 .join(townIndustry.town, town)
                 .join(townIndustry.industry, industry)
@@ -70,6 +71,27 @@ public class TownIndustryRepositoryImpl implements TownIndustryRepositoryCustom 
                         town.code.eq(String.valueOf(code)),
                         industry.name.eq(name)
                 )
+                .groupBy(town.quarter)
+                .orderBy(town.quarter.stringValue().desc())
+                .limit(5)
+                .fetch();
+    }
+
+    @Override
+    public List<SimilarTownIndustryDto> findSimilarTownIndustryByTownCodeAndQuarterAndNameInDistrict(String district, String name) {
+        return queryFactory
+                .select(new QSimilarTownIndustryDto(
+                        town.quarter.stringValue(),
+                        townIndustry.similarStoreCount.sum().stringValue()
+                ))
+                .from(townIndustry)
+                .join(townIndustry.town, town)
+                .join(townIndustry.industry, industry)
+                .where(
+                        town.name.contains(district),
+                        industry.name.eq(name)
+                )
+                .groupBy(town.quarter)
                 .orderBy(town.quarter.stringValue().desc())
                 .limit(5)
                 .fetch();
