@@ -19,8 +19,8 @@ public class MarketTrendsBulkRepository {
     public void saveAll(List<MarketTrends> marketTrends) {
         String sql = "INSERT INTO market_trends (" +
                 "trade_area_change_index, area_change_index_name, operate_sale_avg, close_sale_avg, " +
-                "operate_sale_avg_by_seoul, close_sale_avg_by_seoul)" +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+                "operate_sale_avg_by_seoul, close_sale_avg_by_seoul, town_id)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql,
                 marketTrends,
@@ -32,6 +32,7 @@ public class MarketTrendsBulkRepository {
                     pstmt.setLong(4, marketTrend.getCloseSaleAvg());
                     pstmt.setLong(5, marketTrend.getOperateSaleAvgBySeoul());
                     pstmt.setLong(6, marketTrend.getCloseSaleAvgBySeoul());
+                    pstmt.setLong(7, marketTrend.getTown().getId());
                 });
     }
 }
