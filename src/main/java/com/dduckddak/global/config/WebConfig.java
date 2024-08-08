@@ -1,5 +1,6 @@
 package com.dduckddak.global.config;
 
+import com.dduckddak.global.interceptor.AuthenticationInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +13,7 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
-
+    private  final AuthenticationInterceptor authenticationInterceptor;
     private final List<String> excludePointList = Arrays.asList("/api/members/refresh-token/**");
     private final List<String> addEndPointList = Arrays.asList("/api/**");
     /**
@@ -32,6 +33,11 @@ public class WebConfig implements WebMvcConfigurer {
             }
         };
     }
-
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authenticationInterceptor)
+                .addPathPatterns(addEndPointList)
+                .excludePathPatterns(excludePointList);
+    }
 
 }

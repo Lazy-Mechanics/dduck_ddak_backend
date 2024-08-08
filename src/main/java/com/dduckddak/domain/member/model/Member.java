@@ -1,9 +1,6 @@
 package com.dduckddak.domain.member.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,19 +15,26 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String nickname;
     private String email;
+    @Enumerated(EnumType.STRING)
+    private MemberRole role;
+    private String profileImgUrl;
 
     @Builder
-    public Member(String name, String email) {
-        this.name = name;
+    public Member(String nickname, String email, MemberRole memberRole, String profileImgUrl) {
+        this.nickname = nickname;
         this.email = email;
+        this.role = memberRole;
+        this.profileImgUrl = profileImgUrl;
     }
 
-    public static Member of(String name, String email) {
+    public static Member of(String nickname, String email,MemberRole memberRole, String profileImgUrl){
         return Member.builder()
-                .name(name)
+                .nickname(nickname)
                 .email(email)
+                .memberRole(memberRole)
+                .profileImgUrl(profileImgUrl)
                 .build();
     }
 }

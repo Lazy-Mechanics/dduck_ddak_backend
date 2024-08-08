@@ -43,6 +43,11 @@ public class main implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+
+    }
+/*
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
         log.info("시작");
 
         if (townRepository.count() > 0) {
@@ -53,9 +58,9 @@ public class main implements ApplicationRunner {
         // JSON 파일 읽기
         JSONParser parser = new JSONParser();
 
-        /**
+        *//**
          * 행정동 데이터
-         */
+         *//*
         Reader dong = new FileReader("src/main/resources/json/dongCenter.json");
         JSONArray dongJson = (JSONArray) parser.parse(dong);
 
@@ -99,9 +104,9 @@ public class main implements ApplicationRunner {
         industries = industryRepository.findAll();
         log.info("업종 끝");
 
-        /**
+        *//**
          * 추정 매출 데이터
-         */
+         *//*
         Reader stores = new FileReader("src/main/resources/json/store.json");
         JSONObject storeJson = (JSONObject) parser.parse(stores);
         JSONArray storeDatas = (JSONArray) storeJson.get("DATA");
@@ -177,9 +182,9 @@ public class main implements ApplicationRunner {
 
         List<Finance> financeList = new ArrayList<>();
 
-        /**
+        *//**
          * 소득소비
-         */
+         *//*
         Reader incomeConsumption = new FileReader("src/main/resources/json/finance.json");
         JSONObject financeJson = (JSONObject) parser.parse(incomeConsumption);
         JSONArray financeData = (JSONArray) financeJson.get("DATA");
@@ -211,9 +216,9 @@ public class main implements ApplicationRunner {
         financeBulkRepository.saveAll(financeList);
         log.info("소득소비 끝");
 
-        /**
+        *//**
          *  유동인구
-         */
+         *//*
         for (Object datum : FloatingPopulationJsonData) {
             JSONObject building = (JSONObject) datum;
 
@@ -255,9 +260,9 @@ public class main implements ApplicationRunner {
 
         populationList = new ArrayList<>();
 
-        /**
+        *//**
          * 상주인구
-         */
+         *//*
         Reader residentPopulation = new FileReader("src/main/resources/json/residentPopulation.json");
         JSONObject residentJSON = (JSONObject) parser.parse(residentPopulation);
         JSONArray residentData = (JSONArray) residentJSON.get("DATA");
@@ -286,9 +291,9 @@ public class main implements ApplicationRunner {
             populationList.add(population);
         }
 
-        /**
+        *//**
          * 직장인구
-         */
+         *//*
         Reader workingPopulation = new FileReader("src/main/resources/json/workingPopulation.json");
         JSONObject workingPopulationJson = (JSONObject) parser.parse(workingPopulation);
         JSONArray workingPopulationData = (JSONArray) workingPopulationJson.get("DATA");
@@ -394,5 +399,5 @@ public class main implements ApplicationRunner {
         if (obj == null) return 0L;
         String numericOnly = obj.toString().replaceAll("[^0-9]", "");
         return Long.parseLong(numericOnly);
-    }
+    }*/
 }
