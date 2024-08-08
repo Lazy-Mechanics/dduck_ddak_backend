@@ -3,6 +3,8 @@ package com.dduckddak.domain.data.repository.sales;
 import com.dduckddak.domain.data.dto.QRecentlySalesDto;
 import com.dduckddak.domain.data.dto.RecentlySalesDto;
 import com.dduckddak.domain.data.model.Sales;
+import com.dduckddak.domain.town.dto.QSalesVO;
+import com.dduckddak.domain.town.dto.SalesVO;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -40,9 +42,18 @@ public class SalesRepositoryImpl implements SalesRepositoryCustom{
     }
 
     @Override
-    public Sales findByTownAndIndustry(int code, String name) {
+    public SalesVO findByTownAndIndustry(int code, String name) {
         return queryFactory
-                .selectFrom(sales)
+                .select(new QSalesVO (
+                    sales.mondaySales,
+                    sales.tuesdaySales,
+                    sales.wednesdaySales,
+                    sales.thursdaySales,
+                    sales.fridaySales,
+                    sales.saturdaySales,
+                    sales.sundaySales
+                ))
+                .from(sales)
                 .join(sales.townIndustry, townIndustry).fetchJoin()
                 .join(sales.townIndustry.town, town).fetchJoin()
                 .where(
@@ -68,5 +79,4 @@ public class SalesRepositoryImpl implements SalesRepositoryCustom{
                 .orderBy(town.quarter.desc())
                 .fetch();
     }
-
 }

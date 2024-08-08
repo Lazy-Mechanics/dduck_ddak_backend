@@ -7,8 +7,8 @@ import com.dduckddak.domain.data.repository.MarketTrendRepository;
 import com.dduckddak.domain.data.repository.sales.SalesRepository;
 import com.dduckddak.domain.town.dto.RecentlyTownIndustryResponse;
 import com.dduckddak.domain.town.dto.SalesResponse;
+import com.dduckddak.domain.town.dto.SalesVO;
 import com.dduckddak.domain.town.dto.SimilarTownIndustryDto;
-import com.dduckddak.domain.town.model.TownIndustry;
 import com.dduckddak.domain.town.repository.TownIndustryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,38 +56,20 @@ public class TownIndustryService {
     }
 
     public SalesResponse getIndustriesSales(int code, String name) {
-        Sales sales = salesRepository.findByTownAndIndustry(code, name);
-        return SalesResponse.of(sales);
+        SalesVO salesVO = salesRepository.findByTownAndIndustry(code, name);
+        return SalesResponse.of(salesVO, true);
     }
 
     public SalesResponse getIndustriesSalesInDistrict(String district, String name) {
         List<Sales> sales = salesRepository.findByTownAndIndustryInDistrict(district, name);
-        return SalesResponse.of(new Sales(
-                (long) sales.stream().mapToLong(Sales::getCurrentMonthlySales).average().orElse(0),
+        return SalesResponse.of(new SalesVO(
                 (long) sales.stream().mapToLong(Sales::getMondaySales).average().orElse(0),
                 (long) sales.stream().mapToLong(Sales::getTuesdaySales).average().orElse(0),
                 (long) sales.stream().mapToLong(Sales::getWednesdaySales).average().orElse(0),
                 (long) sales.stream().mapToLong(Sales::getThursdaySales).average().orElse(0),
                 (long) sales.stream().mapToLong(Sales::getFridaySales).average().orElse(0),
                 (long) sales.stream().mapToLong(Sales::getSaturdaySales).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getSundaySales).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getWeekdaySales).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getWeekendSales).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getHour_0_6).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getHour_6_11).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getHour_11_14).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getHour_14_17).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getHour_17_21).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getHour_21_24).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getMenSales).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getWomenSales).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getAge10sSales).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getAge20sSales).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getAge30sSales).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getAge40sSales).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getAge50sSales).average().orElse(0),
-                (long) sales.stream().mapToLong(Sales::getAge60sAndMoreSales).average().orElse(0),
-                sales.get(0).getTownIndustry()
-        ));
+                (long) sales.stream().mapToLong(Sales::getSundaySales).average().orElse(0)
+        ), true);
     }
 }

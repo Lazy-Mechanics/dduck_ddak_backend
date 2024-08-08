@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -62,11 +64,22 @@ public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=UTF-8");
         response.setStatus(200);
-        response.addHeader("Authorization", jwtToken.getAccessToken());
-        response.getWriter().write(
-                objectMapper.writeValueAsString(jwtToken)
-        );
+//        response.addHeader("Authorization", jwtToken.getAccessToken());
+//        response.getWriter().write(
+//                objectMapper.writeValueAsString(jwtToken)
+//        );
 
-        //response.sendRedirect("https://farmingsoon.site/");
+        String randomCookieValue = UUID.randomUUID().toString();
+        ResponseCookie cookie = ResponseCookie.from("accessToken", randomCookieValue)
+                .path("/api/items/")
+                .sameSite("Strict")
+                .domain("gadduck.info")
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(48200)
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+        response.sendRedirect("https://www.gadduck.info/main");
     }
 }
