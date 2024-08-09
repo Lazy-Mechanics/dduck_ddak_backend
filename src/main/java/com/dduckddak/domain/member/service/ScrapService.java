@@ -23,6 +23,9 @@ public class ScrapService {
     @Transactional
     public void saveScrap(ScrapRequest scrapRequest) {
         Scrap scrap = new Scrap(scrapRequest);
+        if (scrapRepository.existsByTownCodeAndIndustryNameAndQuarter(scrap.getTownCode(), scrap.getIndustryName(), scrap.getQuarter())) {
+            throw new RuntimeException("이미 스크랩한 지역입니다.");
+        }
         scrapRepository.save(scrap);
     }
 
