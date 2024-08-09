@@ -45,17 +45,17 @@ public class SalesRepositoryImpl implements SalesRepositoryCustom{
     public SalesVO findByTownAndIndustry(int code, String name) {
         return queryFactory
                 .select(new QSalesVO (
-                    sales.mondaySales,
-                    sales.tuesdaySales,
-                    sales.wednesdaySales,
-                    sales.thursdaySales,
-                    sales.fridaySales,
-                    sales.saturdaySales,
-                    sales.sundaySales
+                        sales.mondaySales,
+                        sales.tuesdaySales,
+                        sales.wednesdaySales,
+                        sales.thursdaySales,
+                        sales.fridaySales,
+                        sales.saturdaySales,
+                        sales.sundaySales
                 ))
                 .from(sales)
-                .join(sales.townIndustry, townIndustry).fetchJoin()
-                .join(sales.townIndustry.town, town).fetchJoin()
+                .join(sales.townIndustry, townIndustry)
+                .join(townIndustry.town, town)
                 .where(
                         town.code.eq(String.valueOf(code)),
                         townIndustry.industry.name.eq(name),
