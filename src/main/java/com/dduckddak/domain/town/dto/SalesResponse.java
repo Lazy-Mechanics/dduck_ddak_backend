@@ -1,11 +1,13 @@
 package com.dduckddak.domain.town.dto;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
+@JsonPropertyOrder({ "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday" })
 public class SalesResponse {
 
     private Double monday;
