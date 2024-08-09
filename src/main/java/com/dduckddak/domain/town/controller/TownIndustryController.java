@@ -7,6 +7,7 @@ import com.dduckddak.domain.town.dto.SalesResponse;
 import com.dduckddak.domain.town.service.TownIndustryService;
 import com.dduckddak.global.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import static com.dduckddak.global.ApiResponse.success;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/towns/industry")
+@Tag(name = "행정동업종 정보 요청", description = "행정동업종 API")
 public class TownIndustryController {
     private final TownIndustryService townIndustryService;
 
