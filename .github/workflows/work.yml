@@ -90,9 +90,6 @@ on:
 jobs:
   backend-docker-build-and-push:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend
 
     steps:
       - name: ✨ Checkout repository
