@@ -137,7 +137,8 @@ jobs:
       - name: ✨ Docker Image 빌드 후 DockerHub에 Push
         uses: docker/build-push-action@v4
         with:
-          file: ./Dockerfile
+          context: ./dduck_ddack_backend
+          file: ./dduck_ddack_backend/Dockerfile
           push: true
           platforms: linux/arm64
           tags: ${{ secrets.DOCKER_REPO }}:latest
