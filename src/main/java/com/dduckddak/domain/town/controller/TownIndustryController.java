@@ -1,9 +1,10 @@
 package com.dduckddak.domain.town.controller;
 
+import com.dduckddak.domain.data.dto.MarketAnalysisResponse;
 import com.dduckddak.domain.data.dto.MarketTrendsResponse;
 import com.dduckddak.domain.town.dto.RecentlyTownIndustryResponse;
-import com.dduckddak.domain.town.dto.SimilarTownIndustryDto;
 import com.dduckddak.domain.town.dto.SalesResponse;
+import com.dduckddak.domain.town.dto.SimilarTownIndustryDto;
 import com.dduckddak.domain.town.service.TownIndustryService;
 import com.dduckddak.global.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -87,5 +88,11 @@ public class TownIndustryController {
             @RequestParam(value = "district") String district,
             @RequestParam(value = "name") String name) {
         return success(townIndustryService.getIndustriesSalesInDistrict(district, name));
+    }
+
+    @GetMapping("/sales-info")
+    public ApiResponse<MarketAnalysisResponse> getTownSalesInfo(@RequestParam(value = "code") Long code, @RequestParam(value = "name") String name
+                                                                ) { // @AuthenticationPrincipal String email
+        return success(townIndustryService.getTownSalesInfo(code, name, "hyeri0603@naver.com"));
     }
 }

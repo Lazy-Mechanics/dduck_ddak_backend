@@ -2,6 +2,7 @@ package com.dduckddak.domain.data.repository.sales;
 
 import com.dduckddak.domain.data.model.Sales;
 import com.dduckddak.domain.town.dto.SalesVO;
+import com.dduckddak.domain.town.model.TownIndustry;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,4 +30,6 @@ public interface SalesRepository extends JpaRepository<Sales, Integer>, SalesRep
                             @Param("name") String name,
                             @Param("currentQuarter") Long currentQuarter,
                             @Param("previousQuarter") Long previousQuarter);
+
+    Sales findByTownIndustry(TownIndustry townIndustry);
 }
