@@ -88,7 +88,7 @@ on:
       - 'main'
 
     jobs:
-      update:
+      backend-docker-build-and-push:
         name: 프로젝트 버전 업데이트
         runs-on: ubuntu-latest
         steps:
