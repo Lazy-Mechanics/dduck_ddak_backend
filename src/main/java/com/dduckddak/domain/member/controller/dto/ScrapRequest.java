@@ -15,4 +15,5 @@ public class ScrapRequest {
     private String industryName;
     @JsonProperty("quarter")
     private Long quarter;
+    private String email;
 }

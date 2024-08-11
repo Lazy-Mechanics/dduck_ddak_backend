@@ -29,8 +29,8 @@ public class SecurityConfig {
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/scraps/**").authenticated()  // "/api/private/**" 경로는 인증 필요
-                        .anyRequest().permitAll()  // 나머지 모든 요청은 인증 필요 없음
+                        .requestMatchers("/scraps/**").authenticated()
+                        .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth -> oauth
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint

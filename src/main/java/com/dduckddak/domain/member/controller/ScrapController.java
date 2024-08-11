@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.dduckddak.global.ApiResponse.*;
+import static com.dduckddak.global.ApiResponse.success;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,13 +28,14 @@ public class ScrapController {
 
     @Operation(summary = "스크랩 삭제", description = "parameter로 townCode(행정동코드)를 받아 스크랩을 삭제합니다.")
     @DeleteMapping("/delete")
-    public void deleteScrap(@RequestParam(value = "town-code") Long code) {
-        scrapService.deleteScrap(code);
+    public void deleteScrap(@RequestParam(value = "town-code") Long code,
+                            @RequestParam(value = "email") String email) {
+        scrapService.deleteScrap(code, email);
     }
 
     @Operation(summary = "스크랩 조회", description = "스크랩 목록을 조회합니다.")
     @GetMapping("/list")
-    public ApiResponse<List<ScrapResponse>> getScrapList() {
-        return success(scrapService.getScrapList());
+    public ApiResponse<List<ScrapResponse>> getScrapList(@RequestParam(value = "email") String email) {
+        return success(scrapService.getScrapList(email));
     }
 }

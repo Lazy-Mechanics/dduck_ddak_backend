@@ -1,10 +1,7 @@
 package com.dduckddak.domain.member.model;
 
 import com.dduckddak.domain.member.controller.dto.ScrapRequest;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +18,11 @@ public class Scrap {
     private String industryName;
     private Long quarter;
 
-    public Scrap(ScrapRequest scrapRequest) {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    public Scrap(ScrapRequest scrapRequest, Member member) {
         this.townCode = scrapRequest.getTownCode();
         this.industryName = scrapRequest.getIndustryName();
         this.quarter = scrapRequest.getQuarter();
