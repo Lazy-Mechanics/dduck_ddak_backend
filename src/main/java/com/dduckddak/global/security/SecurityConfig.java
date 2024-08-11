@@ -18,14 +18,19 @@ import org.springframework.security.web.header.writers.frameoptions.XFrameOption
 public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuthSuccessHandler oAuthSuccessHandler;
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .formLogin().disable()
                 .csrf(csrf -> csrf.disable())
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+                )
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/scraps/**").authenticated()  // "/api/private/**" 경로는 인증 필요
+                        .anyRequest().permitAll()  // 나머지 모든 요청은 인증 필요 없음
                 )
                 .oauth2Login(oauth -> oauth
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
