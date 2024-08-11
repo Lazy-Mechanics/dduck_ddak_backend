@@ -1,4 +1,4 @@
-package com.dduckddak.domain;
+package com.dduckddak.domain.healthCheck;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,6 +8,7 @@ public class HealthCheckController {
 
   @GetMapping("/health-check")
   public String healthCheck() {
-    return "I'm OK";
+    return "✅ server is running";
+
   }
 }
