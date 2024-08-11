@@ -21,6 +21,7 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -28,6 +29,10 @@ import java.util.List;
 @Transactional
 @Profile("local")
 public class main implements ApplicationRunner {
+
+    private Map<String, Town> townMap;
+    private Map<String, Industry> industryMap;
+    private Map<String, TownIndustry> townIndustryMap;
 
     private final TownRepository townRepository;
     private final IndustryRepository industryRepository;
@@ -43,11 +48,6 @@ public class main implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-
-    }
-/*
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
         log.info("시작");
 
         if (townRepository.count() > 0) {
@@ -58,14 +58,11 @@ public class main implements ApplicationRunner {
         // JSON 파일 읽기
         JSONParser parser = new JSONParser();
 
-        *//**
-         * 행정동 데이터
-         *//*
-        Reader dong = new FileReader("src/main/resources/json/dongCenter.json");
-        JSONArray dongJson = (JSONArray) parser.parse(dong);
-
+        /**
+         *  행정동 데이터
+         **/
         List<Town> townList = new ArrayList<>();
-        for (Object datum : dongJson) {
+        for (Object datum : (JSONArray) parser.parse(new FileReader("src/main/resources/json/dongCenter.json"))) {
             JSONObject building = (JSONObject) datum;
 
             for (int year = 2019; year <= 2024; year++) {
@@ -79,23 +76,16 @@ public class main implements ApplicationRunner {
                 }
             }
         }
-        //List<Town> towns = townRepository.saveAll(townList);
         townBulkRepository.saveAll(townList);
         List<Town> towns = townRepository.findAll();
         log.info("행정동 끝");
 
-        Reader FloatingPopulation = new FileReader("src/main/resources/json/FloatingPopulation.json");
-        JSONObject FloatingPopulationJson = (JSONObject) parser.parse(FloatingPopulation);
-        JSONArray FloatingPopulationJsonData = (JSONArray) FloatingPopulationJson.get("DATA");
-
-        List<Population> populationList = new ArrayList<>(); // 유동인구
-
         // 업종
         Reader jumpo = new FileReader("src/main/resources/json/store.json");
         JSONObject store = (JSONObject) parser.parse(jumpo);
-        JSONArray storeData = (JSONArray) store.get("DATA");
+
         List<Industry> industries = new ArrayList<>();
-        for (Object datum : storeData) {
+        for (Object datum : (JSONArray) store.get("DATA")) {
             JSONObject industry = (JSONObject) datum;
             if (industries.stream().noneMatch(n -> n.getCode().equals((String) industry.get("svc_induty_cd"))))
                 industries.add(new Industry((String) industry.get("svc_induty_cd"), (String) industry.get("svc_induty_cd_nm")));
@@ -104,51 +94,53 @@ public class main implements ApplicationRunner {
         industries = industryRepository.findAll();
         log.info("업종 끝");
 
-        *//**
-         * 추정 매출 데이터
-         *//*
+        // 추정 매출 데이터
         Reader stores = new FileReader("src/main/resources/json/store.json");
         JSONObject storeJson = (JSONObject) parser.parse(stores);
-        JSONArray storeDatas = (JSONArray) storeJson.get("DATA");
-
-        Reader estimateSales = new FileReader("src/main/resources/json/estimatedSales.json");
-        JSONObject estimateSalesJson = (JSONObject) parser.parse(estimateSales);
-        JSONArray estimateSalesData = (JSONArray) estimateSalesJson.get("DATA");
 
         List<Sales> sales = new ArrayList<>();
         List<TownIndustry> townIndustryList = new ArrayList<>();
-        for (Object datum : storeDatas) {
-            JSONObject estimate = (JSONObject) datum;
+        for (Object datum : (JSONArray) storeJson.get("DATA")) {
+            JSONObject storeObj = (JSONObject) datum;
 
-            Town town = towns.stream().filter(t -> t.getCode().equals((String) estimate.get("adstrd_cd")))
-                    .filter(t -> t.getQuarter().equals(Long.parseLong((String) estimate.get("stdr_yyqu_cd"))))
+            Town town = towns.stream().filter(t -> t.getCode().equals(storeObj.get("adstrd_cd")))
+                    .filter(t -> t.getQuarter().equals(Long.parseLong((String) storeObj.get("stdr_yyqu_cd"))))
                     .findFirst().orElseThrow(() -> new IllegalArgumentException("Town not found"));
 
-            Industry industry = industries.stream().filter(i -> i.getCode().equals((String) estimate.get("svc_induty_cd")))
+            Industry industry = industries.stream().filter(i -> i.getCode().equals(storeObj.get("svc_induty_cd")))
                     .findFirst().orElseThrow(() -> new IllegalArgumentException("Industry not found"));
 
             townIndustryList.add(TownIndustry.builder()
                     .town(town)
                     .industry(industry)
-                    .storeCount(parseLongFromObject(estimate.get("stor_co")))
-                    .similarStoreCount(parseLongFromObject(estimate.get("similr_induty_stor_co")))
+                    .storeCount(parseLongFromObject(storeObj.get("stor_co")))
+                    .similarStoreCount(parseLongFromObject(storeObj.get("similr_induty_stor_co")))
+                    .openStoreCount(parseLongFromObject(storeObj.get("opbiz_stor_co")))
+                    .closeStoreCount(parseLongFromObject(storeObj.get("clsbiz_stor_co")))
                     .build());
         }
         townIndustryBulkRepository.saveAll(townIndustryList);
         List<TownIndustry> townIndustries = townIndustryRepository.findAll();
+        log.info("행정동 별 업종 끝");
 
-        for (Object datum : estimateSalesData) {
+        Reader estimateSales = new FileReader("src/main/resources/json/estimatedSales.json");
+        JSONObject estimateSalesJson = (JSONObject) parser.parse(estimateSales);
+        int cnt = 0, idx = 0;
+        for (Object datum : (JSONArray) estimateSalesJson.get("DATA")) {
             JSONObject estimate = (JSONObject) datum;
 
             Town town = towns.stream().filter(t -> t.getCode().equals((String) estimate.get("adstrd_cd")))
                     .filter(t -> t.getQuarter().equals(Long.parseLong((String) estimate.get("stdr_yyqu_cd"))))
-                    .findFirst().orElseThrow(() -> new IllegalArgumentException("Town not found"));
+                    .findFirst().orElseThrow(() -> new RuntimeException("Town not found"));
+
             Industry industry = industries.stream().filter(i -> i.getCode().equals((String) estimate.get("svc_induty_cd")))
-                    .findFirst().orElseThrow(() -> new IllegalArgumentException("Industry not found"));
+                    .findFirst().orElseThrow(() -> new RuntimeException("Industry not found"));
+
             TownIndustry townIndustry = townIndustries.stream().filter(t -> t.getTown().getId().equals(town.getId()))
                     .filter(t -> t.getIndustry().getId().equals(industry.getId()))
-                    .findFirst().orElseThrow(() -> new IllegalArgumentException("TownIndustry not found"));
+                    .findFirst().orElseThrow(() -> new RuntimeException("TownIndustry not found"));
 
+            cnt++;
             sales.add(new Sales(
                     parseLongFromObject(estimate.get("thsmon_selng_amt")),
                     parseLongFromObject(estimate.get("mon_selng_amt")),
@@ -176,20 +168,22 @@ public class main implements ApplicationRunner {
                     parseLongFromObject(estimate.get("agrde_60_above_selng_amt")),
                     townIndustry
             ));
+
+            if(cnt == 10000) {
+                log.info(String.valueOf(++idx));
+                estimateSalesBulkRepository.saveAll(sales);
+                cnt = 0;
+                sales = new ArrayList<>();
+            }
+
         }
         estimateSalesBulkRepository.saveAll(sales);
         log.info("추정매출 끝");
 
+         // 소득소비
         List<Finance> financeList = new ArrayList<>();
-
-        *//**
-         * 소득소비
-         *//*
-        Reader incomeConsumption = new FileReader("src/main/resources/json/finance.json");
-        JSONObject financeJson = (JSONObject) parser.parse(incomeConsumption);
-        JSONArray financeData = (JSONArray) financeJson.get("DATA");
-
-        for (Object datum : financeData) {
+        JSONObject financeJson = (JSONObject) parser.parse(new FileReader("src/main/resources/json/finance.json"));
+        for (Object datum :  (JSONArray) financeJson.get("DATA")) {
             JSONObject finance = (JSONObject) datum;
 
             Town town = towns.stream().filter(t -> t.getCode().equals((String) finance.get("adstrd_cd")))
@@ -216,10 +210,10 @@ public class main implements ApplicationRunner {
         financeBulkRepository.saveAll(financeList);
         log.info("소득소비 끝");
 
-        *//**
-         *  유동인구
-         *//*
-        for (Object datum : FloatingPopulationJsonData) {
+        // 유동인구
+        List<Population> populationList = new ArrayList<>();
+        JSONObject FloatingPopulationJson = (JSONObject) parser.parse(new FileReader("src/main/resources/json/FloatingPopulation.json"));
+        for (Object datum : (JSONArray) FloatingPopulationJson.get("DATA")) {
             JSONObject building = (JSONObject) datum;
 
             Town town = towns.stream().filter(t -> t.getCode().equals((String) building.get("adstrd_cd")))
@@ -258,16 +252,10 @@ public class main implements ApplicationRunner {
         }
         populationBulkRepository.saveAll(populationList);
 
+        // 상주인구
         populationList = new ArrayList<>();
-
-        *//**
-         * 상주인구
-         *//*
-        Reader residentPopulation = new FileReader("src/main/resources/json/residentPopulation.json");
-        JSONObject residentJSON = (JSONObject) parser.parse(residentPopulation);
-        JSONArray residentData = (JSONArray) residentJSON.get("DATA");
-
-        for (Object datum : residentData) {
+        JSONObject residentJSON = (JSONObject) parser.parse(new FileReader("src/main/resources/json/residentPopulation.json"));
+        for (Object datum : (JSONArray) residentJSON.get("DATA")) {
             JSONObject regident = (JSONObject) datum;
 
             Town town = towns.stream().filter(t -> t.getCode().equals((String) regident.get("adstrd_cd")))
@@ -291,14 +279,9 @@ public class main implements ApplicationRunner {
             populationList.add(population);
         }
 
-        *//**
-         * 직장인구
-         *//*
-        Reader workingPopulation = new FileReader("src/main/resources/json/workingPopulation.json");
-        JSONObject workingPopulationJson = (JSONObject) parser.parse(workingPopulation);
-        JSONArray workingPopulationData = (JSONArray) workingPopulationJson.get("DATA");
-
-        for (Object datum : workingPopulationData) {
+         // 직장인구
+        JSONObject workingPopulationJson = (JSONObject) parser.parse(new FileReader("src/main/resources/json/workingPopulation.json"));
+        for (Object datum : (JSONArray) workingPopulationJson.get("DATA")) {
             JSONObject workingPopulationObj = (JSONObject) datum;
 
             Town town = towns.stream()
@@ -326,12 +309,9 @@ public class main implements ApplicationRunner {
         log.info("인구데이터 끝");
 
         // 상권변화지표
-        Reader indicateOfCommercialChange = new FileReader("src/main/resources/json/indicators_of_commercial_change.json");
-        JSONObject indicateOfCommercialChangeJson = (JSONObject) parser.parse(indicateOfCommercialChange);
-        JSONArray indicateOfCommercialChangeData = (JSONArray) indicateOfCommercialChangeJson.get("DATA");
-
         List<MarketTrends> marketTrendsList = new ArrayList<>();
-        for (Object datum : indicateOfCommercialChangeData) {
+        JSONObject indicateOfCommercialChangeJson = (JSONObject) parser.parse(new FileReader("src/main/resources/json/indicators_of_commercial_change.json"));
+        for (Object datum : (JSONArray) indicateOfCommercialChangeJson.get("DATA")) {
             JSONObject indicateOfCommercialChangeObj = (JSONObject) datum;
 
             Town town = towns.stream()
@@ -353,11 +333,9 @@ public class main implements ApplicationRunner {
         log.info("상권변화지표 끝");
 
         // 집객시설
-        Reader attractingCustomersPopulation = new FileReader("src/main/resources/json/facility.json");
-        JSONObject attractingCustomersPopulationJson = (JSONObject) parser.parse(attractingCustomersPopulation);
-        JSONArray attractingCustomersPopulationData = (JSONArray) attractingCustomersPopulationJson.get("DATA");
         List<Facility> facilityList = new ArrayList<>();
-        for (Object datum : attractingCustomersPopulationData) {
+        JSONObject attractingCustomersPopulationJson = (JSONObject) parser.parse(new FileReader("src/main/resources/json/facility.json"));
+        for (Object datum : (JSONArray) attractingCustomersPopulationJson.get("DATA")) {
             JSONObject attractingCustomersPopulationObj = (JSONObject) datum;
 
             Town town = towns.stream()
@@ -399,5 +377,5 @@ public class main implements ApplicationRunner {
         if (obj == null) return 0L;
         String numericOnly = obj.toString().replaceAll("[^0-9]", "");
         return Long.parseLong(numericOnly);
-    }*/
+    }
 }

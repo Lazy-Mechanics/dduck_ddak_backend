@@ -10,9 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 		@Server(url = "https://api.gadduck.info", description = "Default Server URL")
 })
 public class DduckddakApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(DduckddakApplication.class, args);
 	}
-
 }

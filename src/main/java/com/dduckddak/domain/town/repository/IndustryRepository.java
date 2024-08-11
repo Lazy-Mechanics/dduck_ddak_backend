@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface IndustryRepository extends JpaRepository<Industry, Integer> {
     Optional<Industry> findByCode(String code);
+    Optional<Industry> findByName(String name);
 }
