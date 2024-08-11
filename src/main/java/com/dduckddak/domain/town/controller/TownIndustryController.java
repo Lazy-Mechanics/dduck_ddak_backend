@@ -90,6 +90,7 @@ public class TownIndustryController {
         return success(townIndustryService.getIndustriesSalesInDistrict(district, name));
     }
 
+    @Operation(summary = "스크랩 보고서 메일 전송", description = "parameter로 행정동코드(code)와 업종명(name)을 받아 특정 행정동의 해당 분기 업종 정보를 메일로 전송")
     @GetMapping("/sales-info")
     public ApiResponse<MarketAnalysisResponse> getTownSalesInfo(@RequestParam(value = "code") Long code, @RequestParam(value = "name") String name
                                                                 ) { // @AuthenticationPrincipal String email

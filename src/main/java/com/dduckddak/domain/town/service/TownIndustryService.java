@@ -26,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
@@ -99,6 +100,7 @@ public class TownIndustryService {
         ), true);
     }
 
+    @Async
     public MarketAnalysisResponse getTownSalesInfo(Long code, String industryName, String email) {
         MimeMessage message = javaMailSender.createMimeMessage();
 
@@ -128,8 +130,8 @@ public class TownIndustryService {
                     .maxDaySales(getMaxDaysSales(sales))
                     .maxTimesSales(getMaxTimesSales(sales))
                     .agePopulation(getMaxAgeSales(sales))
-                    .floatingPopulationIncrease(formatPercentage(getFloatingPopulationIncrease(floatingPopulationCurr, floatingPopulationPast)))
-                    .workingPopulationIncrease(formatPercentage(getFloatingPopulationIncrease(workingPopulationCurr, workingPopulationPast)))
+                    .floatingPopulationIncrease(Double.parseDouble(formatPercentage(getFloatingPopulationIncrease(floatingPopulationCurr, floatingPopulationPast))))
+                    .workingPopulationIncrease(Double.parseDouble(formatPercentage(getFloatingPopulationIncrease(workingPopulationCurr, workingPopulationPast))))
                     .firstGender(getMaxGenderSales(sales).get(0))
                     .secondGender(getMaxGenderSales(sales).get(1))
                     .newStores(townIndustry.getOpenStoreCount().intValue())

@@ -17,11 +17,21 @@
     <p>
         매출 증가율: 전 분기 대비 <strong th:text="${response.increaseRate} + '%'"></strong> 했습니다.
     </p>
-    <p>분기 총 매출액: 이번 분기에는 총 매출액은 <strong th:text="${response.currentQuarterSales} ">원 입니다.</strong></p>
+    <p>분기 총 매출액: 이번 분기에는 총 매출액은 <strong th:text="${response.currentQuarterSales} "></strong> 원 입니다.</p>
 
     <h3>🚶‍♂️ 고객 유입률:</h3>
-    <p>유동인구 증가율: 전 분기 대비 <strong th:text="${response.floatingPopulationIncrease}">%</strong></p>
-    <p>직장인구 증가율: 전 분기 대비 <strong th:text="${response.workingPopulationIncrease}">%</strong></p>
+    <p>
+        유동인구 증가율: 전 분기 대비
+        <strong th:text="${response.floatingPopulationIncrease} + '% '"></strong>
+        <span th:if="${response.floatingPopulationIncrease >= 0}" th:text="'증가했습니다.'"></span>
+        <span th:if="${response.floatingPopulationIncrease < 0}" th:text="'감소했습니다.'"></span>
+    </p>
+    <p>
+        직장인구 증가율: 전 분기 대비
+        <strong th:text="${response.workingPopulationIncrease} + '% '"></strong>
+        <span th:if="${response.workingPopulationIncrease >= 0}" th:text="'증가했습니다.'"></span>
+        <span th:if="${response.workingPopulationIncrease < 0}" th:text="'감소했습니다.'"></span>
+    </p>
 
     <h3>🏪 경쟁 상황:</h3>
     <p>신규 개업 및 폐업: 이번 분기에 <strong th:text="${response.newStores}"></strong>개의 신규 매장이 개업했으며, <strong th:text="${response.closedStores}"></strong>개 매장이 폐업하였습니다.</p>

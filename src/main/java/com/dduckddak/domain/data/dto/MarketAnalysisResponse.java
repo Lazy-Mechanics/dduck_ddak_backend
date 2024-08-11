@@ -17,8 +17,8 @@ public class MarketAnalysisResponse {
     private String increaseRate;
     private String maxTimesSales;       // 최대 시간대
     private String maxDaySales;         // 최대 요일
-    private String floatingPopulationIncrease;  // 유동인구 증가율
-    private String workingPopulationIncrease;  // 직장인구 증가율
+    private Double floatingPopulationIncrease;  // 유동인구 증가율
+    private Double workingPopulationIncrease;  // 직장인구 증가율
     private int newStores;      // 신규 상점 수
     private int closedStores;   // 폐업 상점 수
     private String agePopulation;   // 연령별 인구
