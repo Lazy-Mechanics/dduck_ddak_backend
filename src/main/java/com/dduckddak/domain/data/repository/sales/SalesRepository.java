@@ -91,9 +91,9 @@ public interface SalesRepository extends JpaRepository<Sales, Integer>, SalesRep
             "ON \n" +
             "    sd2023.동이름 = sd2024.동이름\n" +
             "ORDER BY \n" +
-            "    increaseRate DESC" +
+            "    :orderCriteria DESC" +
             "    limit 10;", nativeQuery = true)
-    List<SalesTop10Response> findSalesTop10();
+    List<SalesTop10Response> findSalesTop10(@Param("orderCriteria")String orderCriteria);
 
 
     @Query(value = "SELECT \n" +
@@ -152,7 +152,7 @@ public interface SalesRepository extends JpaRepository<Sales, Integer>, SalesRep
             "ON \n" +
             "    sd2023.동이름 = sd2024.동이름\n" +
             "ORDER BY \n" +
-            "    increaseRate DESC\n" +
+            "    :orderCriteria DESC\n" +
             "limit 10;", nativeQuery = true)
-    List<SalesTop10OfIndustryResponse> findSalesTop10OfIndustry(@Param("name")String name);
+    List<SalesTop10OfIndustryResponse> findSalesTop10OfIndustry(@Param("name")String name, @Param("orderCriteria")String orderCriteria);
 }

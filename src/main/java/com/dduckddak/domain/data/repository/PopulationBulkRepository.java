@@ -63,8 +63,15 @@ public class PopulationBulkRepository {
         String sql = "INSERT INTO population (" +
                 "population_type, total_population, men_population, women_population, " +
                 "age10s_population, age20s_population, age30s_population, age40s_population, " +
-                "age50s_population, age60s_and_more_population, town_id) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "age50s_population, age60s_and_more_population, town_id," +
+                "age10s_population_of_female, age10s_population_of_male," +
+                "age20s_population_of_female, age20s_population_of_male," +
+                "age30s_population_of_female, age30s_population_of_male," +
+                "age40s_population_of_female, age40s_population_of_male," +
+                "age50s_population_of_female, age50s_population_of_male," +
+                "age60s_population_of_female, age60s_population_of_male" +
+                ") " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql,
                 populationList,
@@ -81,6 +88,18 @@ public class PopulationBulkRepository {
                     ps.setLong(9, population.getAge50sPopulation());
                     ps.setLong(10, population.getAge60sAndMorePopulation());
                     ps.setLong(11, population.getTown().getId());
+                    ps.setLong(12, population.getAge10sPopulationOfFemale());
+                    ps.setLong(13, population.getAge10sPopulationOfMale());
+                    ps.setLong(14, population.getAge20sPopulationOfFemale());
+                    ps.setLong(15, population.getAge20sPopulationOfMale());
+                    ps.setLong(16, population.getAge30sPopulationOfFemale());
+                    ps.setLong(17, population.getAge30sPopulationOfMale());
+                    ps.setLong(18, population.getAge40sPopulationOfFemale());
+                    ps.setLong(19, population.getAge40sPopulationOfMale());
+                    ps.setLong(20, population.getAge50sPopulationOfFemale());
+                    ps.setLong(21, population.getAge50sPopulationOfMale());
+                    ps.setLong(22, population.getAge60sPopulationOfFemale());
+                    ps.setLong(23, population.getAge60sPopulationOfMale());
                 });
     }
 }

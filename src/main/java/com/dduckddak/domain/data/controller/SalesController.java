@@ -38,15 +38,15 @@ public class SalesController {
         return ApiResponse.success(salesService.getSalesCompare(code, name));
     }
 
-    @Operation(summary = "행정동 별 매출 Top10", description = "좌측 하단 매출 top10 UI에 사용")
+    @Operation(summary = "행정동 별 매출 Top10", description = "좌측 하단 매출 top10 UI에 사용(increaseRate or sales20241)")
     @GetMapping("/towns/sales/top10")
-    public ApiResponse<List<SalesTop10Response>> getSalesTop10() {
-        return ApiResponse.success(salesService.getSalesTop10());
+    public ApiResponse<List<SalesTop10Response>> getSalesTop10(@RequestParam(value = "orderCriteria") String orderCriteria) {
+        return ApiResponse.success(salesService.getSalesTop10(orderCriteria));
     }
 
-    @Operation(summary = "행정동 별 업종 별 매출 Top10", description = "좌측 하단 매출 top10 UI에 사용(선택한 업종에 대해 행정동 별 매출 TOP10)")
+    @Operation(summary = "행정동 별 업종 별 매출 Top10", description = "좌측 하단 매출 top10 UI에 사용(선택한 업종에 대해 행정동 별 매출 TOP10) (increaseRate or sales20241)")
     @GetMapping("/towns/industries/sales/top10")
-    public ApiResponse<List<SalesTop10OfIndustryResponse>> getSalesTop10OfIndustry(@RequestParam(value = "industryName") String name) {
-        return ApiResponse.success(salesService.getSalesTop10OfIndustry(name));
+    public ApiResponse<List<SalesTop10OfIndustryResponse>> getSalesTop10OfIndustry(@RequestParam(value = "orderCriteria") String orderCriteria,@RequestParam(value = "industryName") String name) {
+        return ApiResponse.success(salesService.getSalesTop10OfIndustry(name, orderCriteria));
     }
 }

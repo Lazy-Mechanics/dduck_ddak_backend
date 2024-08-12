@@ -28,11 +28,11 @@ public class SalesService {
         return SalesResponse.of(salesRepository.getSalesCompare(code, name, 20241L, 20234L), false);
     }
 
-    public List<SalesTop10Response> getSalesTop10() {
-        return salesRepository.findSalesTop10();
+    public List<SalesTop10Response> getSalesTop10(String orderCriteria) {
+        return salesRepository.findSalesTop10(orderCriteria);
     }
 
-    public List<SalesTop10OfIndustryResponse> getSalesTop10OfIndustry(String name) {
-        return salesRepository.findSalesTop10OfIndustry(name);
+    public List<SalesTop10OfIndustryResponse> getSalesTop10OfIndustry(String name, String orderCriteria) {
+        return salesRepository.findSalesTop10OfIndustry(name, orderCriteria);
     }
 }
