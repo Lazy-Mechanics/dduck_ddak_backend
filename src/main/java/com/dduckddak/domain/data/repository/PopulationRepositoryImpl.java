@@ -1,25 +1,30 @@
 package com.dduckddak.domain.data.repository;
 
 import com.dduckddak.domain.data.dto.PopulationByDistrictResponse;
+import com.dduckddak.domain.data.dto.PopulationsTop10Response;
 import com.dduckddak.domain.data.dto.QPopulationByDistrictResponse;
 import com.dduckddak.domain.data.model.Population;
 import com.dduckddak.domain.data.model.PopulationType;
-import com.dduckddak.domain.town.dto.QRecentlyTownIndustryResponse;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static com.dduckddak.domain.data.model.QPopulation.population;
 import static com.dduckddak.domain.town.model.QTown.town;
-import static com.dduckddak.domain.town.model.QTownIndustry.townIndustry;
 
 @RequiredArgsConstructor
 public class PopulationRepositoryImpl implements PopulationRepositoryCustom{
 
     private final JPAQueryFactory queryFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<Population> findTop5ByTownCodeAndPopulationTypeOrderByQuarterDesc(String code, PopulationType populationType) {
@@ -62,6 +67,55 @@ public class PopulationRepositoryImpl implements PopulationRepositoryCustom{
                 .orderBy(town.quarter.desc())
                 .limit(1);
         return Optional.ofNullable(query.fetchOne());
+    }
+
+    @Override
+    public List findPopulationsTop10(String selectCriteria, String orderCriteria) {
+        String queryString = "select \n" +
+                "\tp20241.동이름 as townName,\n" +
+                "\tp20241." + selectCriteria + " as populations,\n" +
+                "\t(p20241." + selectCriteria + " - p20234." + selectCriteria + ") AS populationsDifference,\n" +
+                "    CASE \n" +
+                "        WHEN p20234." + selectCriteria + " != 0 THEN \n" +
+                "            ((p20241." + selectCriteria + "  - p20234." + selectCriteria + ") / p20234." + selectCriteria + ") * 100\n" +
+                "        ELSE \n" +
+                "            NULL\n" +
+                "    END AS increaseRate\n" +
+                "from \n" +
+                "(\n" +
+                "\tselect t.name as 동이름, " + selectCriteria + " from population p\n" +
+                "\tinner join town t on p.town_id = t.id\n" +
+                "\twhere population_type = \"FloatingPopulation\" and t.quarter = 20241\n" +
+                ") p20241\n" +
+                "left join\n" +
+                "(\n" +
+                "\tselect t.name as 동이름, " + selectCriteria + " from population p\n" +
+                "\tinner join town t on p.town_id = t.id\n" +
+                "\twhere population_type = \"FloatingPopulation\" and t.quarter = 20234\n" +
+                ") p20234\n" +
+                "on \n" +
+                "\tp20241.동이름 = p20234.동이름\n" +
+                "order by " + orderCriteria + " desc " +
+                "limit 10;";
+
+        Query query = entityManager.createNativeQuery(queryString);
+
+        List<Object[]> results = query.getResultList();
+        List<PopulationsTop10Response> responseList = new ArrayList<>();
+
+        for (Object[] result : results) {
+            PopulationsTop10Response response = PopulationsTop10Response.builder()
+                            .townName((String) result[0])
+                            .populations(Long.parseLong(String.valueOf(result[1])))
+                            .populationsDifference(Long.parseLong(String.valueOf(result[2])))
+                            .increaseRate((float) (Math.round( Float.parseFloat(String.valueOf(result[3])) * 100 )/ 100.0))
+                            .build();
+
+
+            responseList.add(response);
+        }
+
+        return responseList;
     }
 
 
