@@ -1,5 +1,7 @@
 package com.dduckddak.domain.data.controller;
 
+import com.dduckddak.domain.data.dto.SalesTop10OfIndustryResponse;
+import com.dduckddak.domain.data.dto.SalesTop10Response;
 import com.dduckddak.domain.data.dto.TimelyDto;
 import com.dduckddak.domain.data.service.SalesService;
 import com.dduckddak.domain.town.dto.SalesResponse;
@@ -12,26 +14,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/towns/sales")
 @Tag(name = "매출 추이 요청", description = "매출 API")
 public class SalesController {
 
     private final SalesService salesService;
 
     @Operation(summary = "행정동단위 전체 업종 시간대별 매출 조회", description = "parameter로 행정동코드(code)를 받아 해당 행정동의 전체 업종 시간대별 매출을 조회 '비교 차트로 사용'")
-    @GetMapping("/time")
+    @GetMapping("/towns/sales/time")
     public ApiResponse<TimelyDto> getSalesByCode(String code) {
         return ApiResponse.success(salesService.getSalesByCode(code));
     }
 
     // 전분기 매출 비교
     @Operation(summary = "이거는 지금 예비 기능임 무시 ㄱㄱㄱㄱㄱ", description = "이거는 지금 예비 기능임 무시 ㄱㄱㄱㄱㄱ")
-    @GetMapping("/compare")
+    @GetMapping("/towns/sales/compare")
     public ApiResponse<SalesResponse> getSalesCompare(
             @RequestParam(value = "code") String code,
             @RequestParam(value = "name") String name) {
         return ApiResponse.success(salesService.getSalesCompare(code, name));
+    }
+
+    @Operation(summary = "행정동 별 매출 Top10", description = "좌측 하단 매출 top10 UI에 사용")
+    @GetMapping("/towns/sales/top10")
+    public ApiResponse<List<SalesTop10Response>> getSalesTop10() {
+        return ApiResponse.success(salesService.getSalesTop10());
+    }
+
+    @Operation(summary = "행정동 별 업종 별 매출 Top10", description = "좌측 하단 매출 top10 UI에 사용(선택한 업종에 대해 행정동 별 매출 TOP10)")
+    @GetMapping("/towns/industries/sales/top10")
+    public ApiResponse<List<SalesTop10OfIndustryResponse>> getSalesTop10OfIndustry(@RequestParam(value = "industryName") String name) {
+        return ApiResponse.success(salesService.getSalesTop10OfIndustry(name));
     }
 }
