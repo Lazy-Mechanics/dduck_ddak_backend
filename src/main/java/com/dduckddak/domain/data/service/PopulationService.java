@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -24,6 +25,7 @@ public class PopulationService {
     //동 코드와 인구타입을 입력 받으면 분기별 유동인구를 반환
     public PopulationByQuarterDto getPopulationByCodeTop5(String code, PopulationType floatingPopulation) {
         List<Population> populations = populationRepository.findTop5ByTownCodeAndPopulationTypeOrderByQuarterDesc(code, floatingPopulation);
+        populations.sort(Comparator.comparing(o -> o.getTown().getQuarter()));
         return PopulationByQuarterDto.from(populations);
     }
 
@@ -36,7 +38,6 @@ public class PopulationService {
 
 
     public List<PopulationByDistrictResponse> getPopulationByDistrictTop5(String district, PopulationType populationType) {
-        List<PopulationByDistrictResponse> top5ByDistrictAndPopulationTypeOrderByQuarterDesc = populationRepository.findTop5ByDistrictAndPopulationTypeOrderByQuarterDesc(district, populationType);
-        return top5ByDistrictAndPopulationTypeOrderByQuarterDesc;
+        return populationRepository.findTop5ByDistrictAndPopulationTypeOrderByQuarterDesc(district, populationType);
     }
 }

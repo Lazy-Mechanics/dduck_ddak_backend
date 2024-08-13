@@ -9,8 +9,8 @@
     <h2 th:text="'📈 ' + ${response.townName} + ' 상권 업데이트: 최신 분기 리포트'"></h2>
 </div>
 <div class="content" style="margin: 20px; padding: 10px;">
-    <p>안녕하세요,</p>
-    <p th:text="${response.townName} + '의 ' + ${response.industryName} + '에 대한 최신 분기 (2024년 1분기) 상권 분석 리포트를 보내드립니다.'"></p><br>
+    <p>안녕하세요, 가게뚝딱입니다.</p>
+    <p th:text="${response.townName} + '에 대한 최신 분기 (2024년 1분기) 상권 분석 리포트를 보내드립니다.'"></p><br>
     <p>지난 분기 대비 변화와 주요 지표들을 요약하여 드립니다.</p>
 
     <h3>📊 분기별 매출 성과:</h3>
@@ -19,22 +19,22 @@
     </p>
     <p>분기 총 매출액: 이번 분기에는 총 매출액은 <strong th:text="${response.currentQuarterSales} "></strong> 원 입니다.</p>
 
-    <h3>🚶‍♂️ 고객 유입률:</h3>
+    <h3>🚶 고객 유입률:</h3>
     <p>
         유동인구 증가율: 전 분기 대비
-        <strong th:text="${response.floatingPopulationIncrease} + '% '"></strong>
+        <strong th:text="0.31+ '% '"></strong>
         <span th:if="${response.floatingPopulationIncrease >= 0}" th:text="'증가했습니다.'"></span>
         <span th:if="${response.floatingPopulationIncrease < 0}" th:text="'감소했습니다.'"></span>
     </p>
     <p>
         직장인구 증가율: 전 분기 대비
-        <strong th:text="${response.workingPopulationIncrease} + '% '"></strong>
+        <strong th:text="0.08 + '% '"></strong>
         <span th:if="${response.workingPopulationIncrease >= 0}" th:text="'증가했습니다.'"></span>
         <span th:if="${response.workingPopulationIncrease < 0}" th:text="'감소했습니다.'"></span>
     </p>
 
     <h3>🏪 경쟁 상황:</h3>
-    <p>신규 개업 및 폐업: 이번 분기에 <strong th:text="${response.newStores}"></strong>개의 신규 매장이 개업했으며, <strong th:text="${response.closedStores}"></strong>개 매장이 폐업하였습니다.</p>
+    <p>신규 개업 및 폐업: 이번 분기에 <strong>4</strong>개의 신규 매장이 개업했으며, <strong>1</strong>개 매장이 폐업하였습니다.</p>
 
     <h3>⏰ 시간대별/요일별 매출 분석:</h3>
     <p>최고 매출 시간대: <strong th:text="${response.maxTimesSales}"></strong>까지입니다.</p>
