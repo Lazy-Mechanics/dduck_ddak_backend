@@ -24,7 +24,7 @@ public class ScrapService {
 
     @Transactional
     public void saveScrap(ScrapRequest scrapRequest) {
-        Member member = memberRepository.findByEmail(scrapRequest.getEmail())
+        Member member = memberRepository.findById(1L)
                 .orElseThrow(() -> new RuntimeException("해당 사용자가 존재하지 않습니다."));
 
         Scrap scrap = new Scrap(scrapRequest, member);
