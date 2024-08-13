@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface ScrapRepository extends JpaRepository<Scrap, Long> {
     Optional<Scrap> findByTownCode(Long code);
-    boolean existsByTownCodeAndIndustryNameAndQuarter(Long code, String industryName, Long quarter);
+    boolean existsByTownCodeAndIndustryNameAndQuarter(Long townCode, String industryName, Long quarter);
 }
