@@ -1,12 +1,14 @@
 package com.dduckddak.domain.town.repository;
 
-import com.dduckddak.domain.data.dto.SalesDiffVO;
+import com.dduckddak.domain.data.dto.*;
 import com.dduckddak.domain.town.model.Industry;
 import com.dduckddak.domain.town.model.Town;
 import com.dduckddak.domain.town.model.TownIndustry;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface TownIndustryRepository extends JpaRepository<TownIndustry, Integer>, TownIndustryRepositoryCustom {
     @Query(value =
@@ -62,4 +64,7 @@ public interface TownIndustryRepository extends JpaRepository<TownIndustry, Inte
             nativeQuery = true)
     SalesDiffVO getTownSalesRawData(@Param(value = "code") Long code, @Param(value = "name") String name);
     TownIndustry findByTownAndIndustry(Town town, Industry industry);
+
+
+
 }

@@ -1,8 +1,6 @@
 package com.dduckddak.domain.town.service;
 
-import com.dduckddak.domain.data.dto.MarketAnalysisResponse;
-import com.dduckddak.domain.data.dto.MarketTrendsResponse;
-import com.dduckddak.domain.data.dto.SalesDiffVO;
+import com.dduckddak.domain.data.dto.*;
 import com.dduckddak.domain.data.model.MarketTrends;
 import com.dduckddak.domain.data.model.Population;
 import com.dduckddak.domain.data.model.PopulationType;
@@ -269,5 +267,14 @@ public class TownIndustryService {
 
     private String formatPercentage(double number) {
         return String.format("%.1f", number);
+    }
+
+    public List<StoreCountTop10Response> getStoreCountTop10(String orderCriteria) {
+        return townIndustryRepository.findStoreCountTop10(orderCriteria);
+
+    }
+
+    public List<StoreCountTop10OfIndustryResponse> getSalesTop10OfIndustry(String industryName, String orderCriteria) {
+        return townIndustryRepository.findStoreCountTop10OfIndustry(industryName, orderCriteria);
     }
 }
