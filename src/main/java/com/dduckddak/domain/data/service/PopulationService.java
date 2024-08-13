@@ -2,6 +2,7 @@ package com.dduckddak.domain.data.service;
 
 import com.dduckddak.domain.data.dto.PopulationByDistrictResponse;
 import com.dduckddak.domain.data.dto.PopulationByQuarterDto;
+import com.dduckddak.domain.data.dto.PopulationsTop10Response;
 import com.dduckddak.domain.data.dto.TimelyDto;
 import com.dduckddak.domain.data.model.Population;
 import com.dduckddak.domain.data.model.PopulationType;
@@ -39,5 +40,9 @@ public class PopulationService {
 
     public List<PopulationByDistrictResponse> getPopulationByDistrictTop5(String district, PopulationType populationType) {
         return populationRepository.findTop5ByDistrictAndPopulationTypeOrderByQuarterDesc(district, populationType);
+    }
+
+    public List<PopulationsTop10Response> getPopulationsTop10(String selectCriteria, String orderCriteria) {
+        return populationRepository.findPopulationsTop10(selectCriteria, orderCriteria);
     }
 }
