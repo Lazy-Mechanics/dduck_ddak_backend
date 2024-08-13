@@ -1,7 +1,6 @@
 package com.dduckddak.domain.data.repository.sales;
 
-import com.dduckddak.domain.data.dto.QRecentlySalesDto;
-import com.dduckddak.domain.data.dto.RecentlySalesDto;
+import com.dduckddak.domain.data.dto.*;
 import com.dduckddak.domain.data.model.Sales;
 import com.dduckddak.domain.town.dto.QSalesVO;
 import com.dduckddak.domain.town.dto.SalesVO;
@@ -11,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import static com.dduckddak.domain.data.model.QPopulation.population;
 import static com.dduckddak.domain.data.model.QSales.sales;
 import static com.dduckddak.domain.town.model.QTown.town;
 import static com.dduckddak.domain.town.model.QTownIndustry.townIndustry;
@@ -78,5 +78,27 @@ public class SalesRepositoryImpl implements SalesRepositoryCustom{
                 )
                 .orderBy(town.quarter.desc())
                 .fetch();
+    }
+
+    @Override
+    public List<SalesForTransitionData> findSalesForTransitionData() {
+        queryFactory
+                .select(new QSalesForTransitionData(
+                        town.name.stringValue(),
+                        town.code.stringValue(),
+                        town.quarter.stringValue(),
+                        sales.currentMonthlySales.sum()
+                ))
+                .from(townIndustry)
+                .innerJoin(townIndustry.town, town)
+                .innerJoin(sales).on(sales.townIndustry.eq(townIndustry))
+                .where(
+                    town.quarter.in(20241L, 20234L, 20233L, 20232L, 20231L)
+                )
+                .groupBy(town.name, town.quarter, town.code)
+                .orderBy(town.quarter.desc(), sales.currentMonthlySales.sum().desc())
+                .fetch();
+
+        return List.of();
     }
 }
