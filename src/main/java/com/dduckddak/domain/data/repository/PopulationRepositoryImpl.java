@@ -118,4 +118,17 @@ public class PopulationRepositoryImpl implements PopulationRepositoryCustom{
         return responseList;
     }
 
+    @Override
+    public List<Population> findFloatingPopulationTransition(String code) {
+
+        return queryFactory
+                .selectFrom(population)
+                .innerJoin(population.town, town).fetchJoin()
+                .where(population.populationType.eq(PopulationType.FloatingPopulation)
+                        .and(town.quarter.in(20241, 20234, 20233, 20232, 20231)))
+                .orderBy(population.town.quarter.desc(), population.totalPopulation.desc())
+                .fetch();
+
+    }
+
 }

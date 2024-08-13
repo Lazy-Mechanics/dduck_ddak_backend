@@ -24,6 +24,13 @@ public class PopulationController {
 
     private final PopulationService populationService;
 
+    @Operation(summary = "행정동의 유동인구 수 추이")
+    @GetMapping("/floating/transition")
+    public ApiResponse<PopulationTransitionResponse> getFloatingPopulationTransition(@RequestParam(value = "code") String code){
+        PopulationTransitionResponse floatingPopulationTransition = populationService.getFloatingPopulationTransition(code);
+        return success(floatingPopulationTransition);
+    }
+
     @Operation(summary = "행정동별 전체 유동인구 조회", description = "parameter로 행정동코드(code)를 받아 해당 행정동의 전체 유동인구를 조회")
     @GetMapping("/floating/quarter")
     public ApiResponse<PopulationByQuarterDto> getFloatingPopulationByCodeTop5(@RequestParam(value = "code") String code) {

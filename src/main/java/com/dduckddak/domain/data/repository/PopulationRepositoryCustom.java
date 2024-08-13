@@ -21,4 +21,6 @@ public interface PopulationRepositoryCustom {
 
 
     List<PopulationsTop10Response> findPopulationsTop10(String selectCriteria, String orderCriteria, String populationType);
-    }
+
+    List<Population> findFloatingPopulationTransition(String code);
+}

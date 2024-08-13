@@ -1,9 +1,7 @@
 package com.dduckddak.domain.data.service;
 
-import com.dduckddak.domain.data.dto.PopulationByDistrictResponse;
-import com.dduckddak.domain.data.dto.PopulationByQuarterDto;
-import com.dduckddak.domain.data.dto.PopulationsTop10Response;
-import com.dduckddak.domain.data.dto.TimelyDto;
+import com.dduckddak.domain.data.dto.*;
+import com.dduckddak.domain.data.dto.PopulationTransitionResponse.PopulationData;
 import com.dduckddak.domain.data.model.Population;
 import com.dduckddak.domain.data.model.PopulationType;
 import com.dduckddak.domain.data.repository.PopulationRepository;
@@ -12,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -73,5 +72,36 @@ public class PopulationService {
         }
         System.out.println(columnName);
         return populationRepository.findPopulationsTop10(columnName, orderCriteria, "'residentPopulation'");
+    }
+
+    public PopulationTransitionResponse getFloatingPopulationTransition(String code) {
+        List<Population> populations = populationRepository.findFloatingPopulationTransition(code);
+        List<PopulationData> populationDataList = new ArrayList<>();
+
+        long[] quarterArr = new long[]{20241L, 20234L, 20233L, 20232L, 20231L};
+        for(long quarter : quarterArr){
+
+            List<Population> listOfCity = populations.stream().filter
+                    (p -> p.getTown().getQuarter().equals(quarter)).toList();
+
+            Population population = listOfCity.stream().filter(p -> p.getTown().getCode().equals(code)).findFirst().get();
+            long populationOfTown = population.getTotalPopulation();
+
+            int rankAtCity = listOfCity.indexOf(population) + 1; // 20241분기 시 내 등수
+            long populationAvgOfCity = (long) listOfCity.stream().mapToLong(Population::getTotalPopulation).average().getAsDouble();
+
+
+            List<Population> listOfDistrict = listOfCity.stream().filter
+                    (p -> p.getTown().getName().split(" ")[0].equals(population.getTown().getName().split(" ")[0])).toList();
+
+            int rankAtDistrict = listOfDistrict.indexOf(population) + 1; // 20241분기 구 내 등수
+            long populationAvgOfDistrict = (long) listOfDistrict.stream().mapToLong(Population::getTotalPopulation).average().getAsDouble();
+
+            populationDataList.add(new PopulationData(quarter, populationOfTown, rankAtCity, populationAvgOfCity, rankAtDistrict, populationAvgOfDistrict));
+        }
+
+        return PopulationTransitionResponse.from(populationDataList);
+
+
     }
 }
