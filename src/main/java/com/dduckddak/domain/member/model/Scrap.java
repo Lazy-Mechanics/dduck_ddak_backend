@@ -18,7 +18,7 @@ public class Scrap {
     private String industryName;
     private Long quarter;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
