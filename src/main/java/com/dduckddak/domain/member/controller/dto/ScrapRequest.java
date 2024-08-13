@@ -13,8 +13,6 @@ import lombok.ToString;
 public class ScrapRequest {
     @JsonProperty("town-code")
     private Long townCode;
-    @JsonProperty("industry-name")
-    private String industryName;
     @JsonProperty("quarter")
     private Long quarter;
     private String email;

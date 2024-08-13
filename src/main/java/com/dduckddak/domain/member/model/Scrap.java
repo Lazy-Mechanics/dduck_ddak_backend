@@ -15,7 +15,6 @@ public class Scrap {
     private Long id;
 
     private Long townCode;
-    private String industryName;
     private Long quarter;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,7 +23,6 @@ public class Scrap {
 
     public Scrap(ScrapRequest scrapRequest, Member member) {
         this.townCode = scrapRequest.getTownCode();
-        this.industryName = scrapRequest.getIndustryName();
         this.quarter = scrapRequest.getQuarter();
         this.member = member;
     }

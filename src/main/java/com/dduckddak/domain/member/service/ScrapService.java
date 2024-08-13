@@ -31,7 +31,7 @@ public class ScrapService {
 
         log.info("ScrapRequest: {}", scrapRequest);
         Scrap scrap = new Scrap(scrapRequest, member);
-        if (scrapRepository.existsByTownCodeAndIndustryNameAndQuarter(scrap.getTownCode(), scrap.getIndustryName(), scrap.getQuarter())) {
+        if (scrapRepository.existsByTownCodeAndQuarter(scrap.getTownCode(), scrap.getQuarter())) {
             throw new RuntimeException("이미 스크랩한 지역입니다.");
         }
 
@@ -55,7 +55,7 @@ public class ScrapService {
                 .map(scrap -> {
                     Town town = townRepository.findByCodeAndQuarter(String.valueOf(scrap.getTownCode()), scrap.getQuarter())
                             .orElseThrow(() -> new RuntimeException("해당 지역이 존재하지 않습니다."));
-                    return new ScrapResponse(Long.parseLong(town.getCode()), town.getName(), scrap.getIndustryName(), scrap.getQuarter());
+                    return new ScrapResponse(Long.parseLong(town.getCode()), town.getName(), scrap.getQuarter());
                 })
                 .toList();
     }
