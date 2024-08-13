@@ -70,7 +70,7 @@ public class PopulationRepositoryImpl implements PopulationRepositoryCustom{
     }
 
     @Override
-    public List findPopulationsTop10(String selectCriteria, String orderCriteria) {
+    public List findPopulationsTop10(String selectCriteria, String orderCriteria, String populationType) {
         String queryString = "select \n" +
                 "\tp20241.동이름 as townName,\n" +
                 "\tp20241." + selectCriteria + " as populations,\n" +
@@ -85,13 +85,13 @@ public class PopulationRepositoryImpl implements PopulationRepositoryCustom{
                 "(\n" +
                 "\tselect t.name as 동이름, " + selectCriteria + " from population p\n" +
                 "\tinner join town t on p.town_id = t.id\n" +
-                "\twhere population_type = \"FloatingPopulation\" and t.quarter = 20241\n" +
+                "\twhere population_type = " + populationType + " and t.quarter = 20241\n" +
                 ") p20241\n" +
                 "left join\n" +
                 "(\n" +
                 "\tselect t.name as 동이름, " + selectCriteria + " from population p\n" +
                 "\tinner join town t on p.town_id = t.id\n" +
-                "\twhere population_type = \"FloatingPopulation\" and t.quarter = 20234\n" +
+                "\twhere population_type = " + populationType + " and t.quarter = 20234\n" +
                 ") p20234\n" +
                 "on \n" +
                 "\tp20241.동이름 = p20234.동이름\n" +
@@ -117,6 +117,5 @@ public class PopulationRepositoryImpl implements PopulationRepositoryCustom{
 
         return responseList;
     }
-
 
 }

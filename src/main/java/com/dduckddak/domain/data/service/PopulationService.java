@@ -42,7 +42,36 @@ public class PopulationService {
         return populationRepository.findTop5ByDistrictAndPopulationTypeOrderByQuarterDesc(district, populationType);
     }
 
-    public List<PopulationsTop10Response> getPopulationsTop10(String selectCriteria, String orderCriteria) {
-        return populationRepository.findPopulationsTop10(selectCriteria, orderCriteria);
+    public List<PopulationsTop10Response> getFloatingPopulationsTop10(String selectCriteria, String orderCriteria) {
+        return populationRepository.findPopulationsTop10(selectCriteria, orderCriteria, "'floatingPopulation'");
+    }
+
+    public List<PopulationsTop10Response> getResidentPopulationsTop10(String gender, String age, String orderCriteria) {
+        String columnName = "population";
+        if(gender.equals("all"))
+        {
+            if(age.equals("all")) // 모든 인구 수 조회
+                columnName = "total_" + columnName; // total_population
+            else if(age.equals("60"))
+                columnName = "age" + age + "s_AndMore" + columnName; // age60sAndMore_population
+            else
+                columnName = "age" + age + "s_" + columnName; // age10s_population(10,20,30,40,50)
+        } else if(gender.equals("men")) {
+            if(age.equals("all")) // 모든 남성 인구 수 조회
+                columnName = "men_" + columnName; // men_population
+            else if(age.equals("60"))
+                columnName = "age" + age + "s_AndMore" + columnName + "_of_male"; // age60sAndMore_population_of_male
+            else
+                columnName = "age" + age + "s_" + columnName + "_of_male"; // age10s_population_of_male(10,20,30,40,50)
+        } else if(gender.equals("women")) {
+            if(age.equals("all")) // 모든 여성 인구 수 조회
+                columnName = "women_" + columnName; // women_population
+            else if(age.equals("60"))
+                columnName = "age" + age + "s_AndMore" + columnName + "_of_female"; // age60sAndMore_population_of_male
+            else
+                columnName = "age" + age + "s_" + columnName + "_of_female"; // age10s_population_of_male(10,20,30,40,50)
+        }
+        System.out.println(columnName);
+        return populationRepository.findPopulationsTop10(columnName, orderCriteria, "'residentPopulation'");
     }
 }

@@ -68,9 +68,17 @@ public class PopulationController {
     }
 
     @Operation(summary = "행정동 별 유동인구 Top10", description = "좌측 하단 유동인구 top10 UI에 사용(조회 조건은 컬럼명, 정렬 조건은 populations or increaseRate)")
-    @GetMapping("/top10")
-    public ApiResponse<List<PopulationsTop10Response>> getSalesTop10(@RequestParam(value = "orderCriteria") String orderCriteria
+    @GetMapping("floating/top10")
+    public ApiResponse<List<PopulationsTop10Response>> getFloatingPopulationsTop10(@RequestParam(value = "orderCriteria") String orderCriteria
             , @RequestParam(value = "selectCriteria") String selectCriteria) {
-        return ApiResponse.success(populationService.getPopulationsTop10(selectCriteria, orderCriteria));
+        return ApiResponse.success(populationService.getFloatingPopulationsTop10(selectCriteria, orderCriteria));
+    }
+
+    @Operation(summary = "행정동 별 유동인구 Top10", description = "좌측 하단 유동인구 top10 UI에 사용(조회 조건은 컬럼명, 정렬 조건은 populations or increaseRate)")
+    @GetMapping("resident/top10")
+    public ApiResponse<List<PopulationsTop10Response>> getResidentPopulationsTop10(@RequestParam(value = "orderCriteria") String orderCriteria
+            , @RequestParam(value = "gender", defaultValue = "all") String gender
+            , @RequestParam(value = "age", defaultValue = "all") String age) {
+        return ApiResponse.success(populationService.getResidentPopulationsTop10(gender, age, orderCriteria));
     }
 }

@@ -4,7 +4,6 @@ import com.dduckddak.domain.data.dto.PopulationByDistrictResponse;
 import com.dduckddak.domain.data.dto.PopulationsTop10Response;
 import com.dduckddak.domain.data.model.Population;
 import com.dduckddak.domain.data.model.PopulationType;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,5 +20,5 @@ public interface PopulationRepositoryCustom {
     Optional<Population> findTop1ByTownCodeAndPopulationTypeOrderByQuarterDesc(String code, PopulationType populationType);
 
 
-    List<PopulationsTop10Response> findPopulationsTop10(String selectCriteria, String orderCriteria);
-}
+    List<PopulationsTop10Response> findPopulationsTop10(String selectCriteria, String orderCriteria, String populationType);
+    }
