@@ -26,5 +26,6 @@ public class Scrap {
         this.townCode = scrapRequest.getTownCode();
         this.industryName = scrapRequest.getIndustryName();
         this.quarter = scrapRequest.getQuarter();
+        this.member = member;
     }
 }
