@@ -29,7 +29,7 @@ public class SecurityConfig {
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/scraps/**").authenticated()
+//                        .requestMatchers("/scraps/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth -> oauth
