@@ -22,11 +22,10 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     private final JwtProvider jwtProvider;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info(request.getHeader("Origin"));
-        log.info("Authentication Interceptor : " + request.getRequestURI());
+//        log.info(request.getHeader("Origin"));
+//        log.info("Authentication Interceptor : " + request.getRequestURI());
         String accessToken = JwtUtils.extractBearerToken(request.getHeader("Authorization"));
-
-        log.info(accessToken);
+//        log.info(accessToken);
 
         if (accessToken != null) { // 토큰 재발급의 요청이 아니면서 accessToken이 존재할 때
             if(jwtProvider.validateAccessToken(accessToken)){
