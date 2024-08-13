@@ -1,6 +1,7 @@
 package com.dduckddak.domain.data.repository;
 
 import com.dduckddak.domain.data.dto.PopulationByDistrictResponse;
+import com.dduckddak.domain.data.dto.PopulationsTop10Response;
 import com.dduckddak.domain.data.model.Population;
 import com.dduckddak.domain.data.model.PopulationType;
 
@@ -17,4 +18,9 @@ public interface PopulationRepositoryCustom {
 
     // 최신 분기의 시간당 유동인구를 반환
     Optional<Population> findTop1ByTownCodeAndPopulationTypeOrderByQuarterDesc(String code, PopulationType populationType);
+
+
+    List<PopulationsTop10Response> findPopulationsTop10(String selectCriteria, String orderCriteria, String populationType);
+
+    List<Population> findFloatingPopulationTransition(String code);
 }

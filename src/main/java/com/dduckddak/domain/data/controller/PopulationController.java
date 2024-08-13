@@ -1,8 +1,6 @@
 package com.dduckddak.domain.data.controller;
 
-import com.dduckddak.domain.data.dto.PopulationByDistrictResponse;
-import com.dduckddak.domain.data.dto.PopulationByQuarterDto;
-import com.dduckddak.domain.data.dto.TimelyDto;
+import com.dduckddak.domain.data.dto.*;
 import com.dduckddak.domain.data.model.PopulationType;
 import com.dduckddak.domain.data.service.PopulationService;
 import com.dduckddak.global.ApiResponse;
@@ -25,6 +23,13 @@ import static com.dduckddak.global.ApiResponse.success;
 public class PopulationController {
 
     private final PopulationService populationService;
+
+    @Operation(summary = "행정동의 유동인구 수 추이")
+    @GetMapping("/floating/transition")
+    public ApiResponse<PopulationTransitionResponse> getFloatingPopulationTransition(@RequestParam(value = "code") String code){
+        PopulationTransitionResponse floatingPopulationTransition = populationService.getFloatingPopulationTransition(code);
+        return success(floatingPopulationTransition);
+    }
 
     @Operation(summary = "행정동별 전체 유동인구 조회", description = "parameter로 행정동코드(code)를 받아 해당 행정동의 전체 유동인구를 조회")
     @GetMapping("/floating/quarter")
@@ -67,5 +72,20 @@ public class PopulationController {
     public ApiResponse<TimelyDto> getFloatingPopulationByCodeTop1(String code) {
 
         return success(populationService.getFloatingPopulationByCodeTop1(code));
+    }
+
+    @Operation(summary = "행정동 별 유동인구 Top10", description = "좌측 하단 유동인구 top10 UI에 사용(조회 조건은 컬럼명, 정렬 조건은 populations or increaseRate)")
+    @GetMapping("floating/top10")
+    public ApiResponse<List<PopulationsTop10Response>> getFloatingPopulationsTop10(@RequestParam(value = "orderCriteria") String orderCriteria
+            , @RequestParam(value = "selectCriteria", defaultValue = "total_population") String selectCriteria) {
+        return ApiResponse.success(populationService.getFloatingPopulationsTop10(selectCriteria, orderCriteria));
+    }
+
+    @Operation(summary = "행정동 별 주거인구 Top10", description = "좌측 하단 유동인구 top10 UI에 사용(조회 조건은 컬럼명, 정렬 조건은 populations or increaseRate)")
+    @GetMapping("resident/top10")
+    public ApiResponse<List<PopulationsTop10Response>> getResidentPopulationsTop10(@RequestParam(value = "orderCriteria") String orderCriteria
+            , @RequestParam(value = "gender", defaultValue = "all") String gender
+            , @RequestParam(value = "age", defaultValue = "all") String age) {
+        return ApiResponse.success(populationService.getResidentPopulationsTop10(gender, age, orderCriteria));
     }
 }

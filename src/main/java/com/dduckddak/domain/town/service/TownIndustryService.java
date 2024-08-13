@@ -139,7 +139,7 @@ public class TownIndustryService {
                     .maleVsFemaleSales(formatPercentage(Double.parseDouble(getMaxGenderSales(sales).get(2))))
                     .build();
 
-            messageHelper.setSubject("가게뚝딱: " + marketAnalysisResponse.getTownName() + " " + marketAnalysisResponse.getIndustryName() + " 최신 분기 매출 분석");
+            messageHelper.setSubject("가게뚝딱: " + marketAnalysisResponse.getTownName() + " 최신 분기 매출 분석");
             messageHelper.setTo(email);
             Context context = new Context();
             context.setVariable("response", marketAnalysisResponse);
