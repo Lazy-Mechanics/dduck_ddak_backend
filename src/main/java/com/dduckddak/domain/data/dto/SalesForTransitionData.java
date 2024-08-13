@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 public class SalesForTransitionData {
     private String townName;
     private String townCode;
-    private String quarter;
+    private Long quarter;
     private Long salesAtTown;
 
     @QueryProjection
-    public SalesForTransitionData(String townName, String townCode, String quarter, Long salesAtTown) {
+    public SalesForTransitionData(String townName, String townCode, Long quarter, Long salesAtTown) {
         this.townName = townName;
         this.townCode = townCode;
         this.quarter = quarter;

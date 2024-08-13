@@ -51,14 +51,14 @@ public class SalesService {
             SalesForTransitionData sales = listOfCity.stream().filter(s -> s.getTownCode().equals(code)).findFirst().get();
             Long salesAtTown = sales.getSalesAtTown();
 
-            int rankAtCity = listOfCity.indexOf(salesAtTown) + 1; // 20241분기 시 내 등수
+            int rankAtCity = listOfCity.indexOf(sales) + 1; // 20241분기 시 내 등수
             long salesAvgOfCity = (long) listOfCity.stream().mapToLong(s -> s.getSalesAtTown()).average().getAsDouble();
 
 
             List<SalesForTransitionData> listOfDistrict = listOfCity.stream().filter
                     (s -> s.getTownName().split(" ")[0].equals(sales.getTownName().split(" ")[0])).toList();
 
-            int rankAtDistrict = listOfDistrict.indexOf(salesAtTown) + 1; // 20241분기 구 내 등수
+            int rankAtDistrict = listOfDistrict.indexOf(sales) + 1; // 20241분기 구 내 등수
             long populationAvgOfDistrict = (long) listOfDistrict.stream().mapToLong(s -> s.getSalesAtTown()).average().getAsDouble();
 
             salesDataList.add(new SalesTransitionResponse.SalesData(quarter, sales.getSalesAtTown(),  rankAtCity, salesAvgOfCity, rankAtDistrict, populationAvgOfDistrict));

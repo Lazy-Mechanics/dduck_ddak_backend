@@ -82,11 +82,11 @@ public class SalesRepositoryImpl implements SalesRepositoryCustom{
 
     @Override
     public List<SalesForTransitionData> findSalesForTransitionData() {
-        queryFactory
+        return queryFactory
                 .select(new QSalesForTransitionData(
                         town.name.stringValue(),
                         town.code.stringValue(),
-                        town.quarter.stringValue(),
+                        town.quarter,
                         sales.currentMonthlySales.sum()
                 ))
                 .from(townIndustry)
@@ -99,6 +99,5 @@ public class SalesRepositoryImpl implements SalesRepositoryCustom{
                 .orderBy(town.quarter.desc(), sales.currentMonthlySales.sum().desc())
                 .fetch();
 
-        return List.of();
     }
 }
