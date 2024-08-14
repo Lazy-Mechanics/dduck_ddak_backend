@@ -1,5 +1,7 @@
 package com.dduckddak.domain.data.sales.repository;
 
+import com.dduckddak.domain.data.sales.dto.SalesRateByAgeAndIndustryResponse;
+import com.dduckddak.domain.data.sales.dto.SalesRateByGenderAndIndustryResponse;
 import com.dduckddak.domain.data.sales.model.Sales;
 import com.dduckddak.domain.town.dto.SalesVO;
 import com.dduckddak.domain.town.model.TownIndustry;
@@ -35,4 +37,52 @@ public interface SalesRepository extends JpaRepository<Sales, Integer>, SalesRep
 
 
 
+
+
+    @Query(value =
+            "SELECT \n" +
+                    "\tt.name AS townName, \n" +
+                    "    i.name as industryName,\n" +
+                    "    ROUND(s.men_sales / (s.men_sales + s.women_sales) * 100, 1) AS menPercentage,\n" +
+                    "    ROUND(s.women_sales / (s.men_sales + s.women_sales) * 100, 1) AS womenPercentage,\n" +
+                    "    s.men_sales + s.women_sales as salesOfIndustry\n" +
+                    "FROM \n" +
+                    "\ttown_industry ti\n" +
+                    "INNER JOIN \n" +
+                    "\ttown t ON ti.town_id = t.id\n" +
+                    "INNER JOIN \n" +
+                    "\tindustry i ON ti.industry_id = i.id\n" +
+                    "INNER JOIN \n" +
+                    "\tsales s ON ti.id = s.town_industry_id\n" +
+                    "WHERE \n" +
+                    "\tt.quarter in (20241) AND t.code = :townCode AND i.name = :industryName",
+            nativeQuery = true)
+    SalesRateByGenderAndIndustryResponse findSalesRateByGenderAndIndustry(@Param("townCode") String townCode, @Param("industryName") String industryName);
+
+
+    @Query(value =
+            "SELECT \n" +
+                    "\tt.name AS townName, \n" +
+                    "    i.name as industryName,\n" +
+                    "    age10s_sales + age20s_sales + age30s_sales + age40s_sales + age50s_sales + age60s_and_more_sales AS totalSales,\n" +
+                    "\tROUND(age10s_sales / (age10s_sales + age20s_sales + age30s_sales + age40s_sales + age50s_sales + age60s_and_more_sales) * 100, 1) AS age10sSales,\n" +
+                    "\tROUND(age20s_sales / (age10s_sales + age20s_sales + age30s_sales + age40s_sales + age50s_sales + age60s_and_more_sales) * 100, 1) AS age20sSales,\n" +
+                    "\tROUND(age30s_sales / (age10s_sales + age20s_sales + age30s_sales + age40s_sales + age50s_sales + age60s_and_more_sales) * 100, 1) AS age30sSales,\n" +
+                    "\tROUND(age40s_sales / (age10s_sales + age20s_sales + age30s_sales + age40s_sales + age50s_sales + age60s_and_more_sales) * 100, 1) AS age40sSales,\n" +
+                    "\tROUND(age50s_sales / (age10s_sales + age20s_sales + age30s_sales + age40s_sales + age50s_sales + age60s_and_more_sales) * 100, 1) AS age50sSales,\n" +
+                    "\tROUND(age60s_and_more_sales / (age10s_sales + age20s_sales + age30s_sales + age40s_sales + age50s_sales + age60s_and_more_sales) * 100, 1) AS age60sAndMoreSales,\n" +
+                    "    ROUND(s.men_sales / (s.men_sales + s.women_sales) * 100, 1) AS menPercentage,\n" +
+                    "    ROUND(s.women_sales / (s.men_sales + s.women_sales) * 100, 1) AS womenPercentage\n" +
+                    "FROM \n" +
+                    "\ttown_industry ti\n" +
+                    "INNER JOIN \n" +
+                    "\ttown t ON ti.town_id = t.id\n" +
+                    "INNER JOIN \n" +
+                    "\tindustry i ON ti.industry_id = i.id\n" +
+                    "INNER JOIN \n" +
+                    "\tsales s ON ti.id = s.town_industry_id\n" +
+                    "WHERE \n" +
+                    "\tt.quarter in (20241) AND t.code = :townCode AND i.name = :industryName ",
+            nativeQuery = true)
+    SalesRateByAgeAndIndustryResponse findSalesRateByAgeAndIndustry(@Param("townCode") String townCode, @Param("industryName") String industryName);
 }

@@ -97,4 +97,14 @@ public class SalesService {
 
         return SalesTransitionByIndustryResponse.from(salesDataList);
     }
+
+    public SalesRateByGenderAndIndustryResponse getSalesRateByGenderAndIndustry(String townCode, String industryName) {
+        SalesRateByGenderAndIndustryResponse salesRateByGenderAndIndustry = salesRepository.findSalesRateByGenderAndIndustry(townCode, industryName);
+        return salesRateByGenderAndIndustry;
+    }
+
+    public SalesRateByAgeAndIndustryResponse getSalesRateByAgeAndIndustry(String townCode, String industryName) {
+        SalesRateByAgeAndIndustryResponse salesRateByAgeAndIndustryResponse = salesRepository.findSalesRateByAgeAndIndustry(townCode, industryName);
+        return salesRateByAgeAndIndustryResponse;
+    }
 }

@@ -1,10 +1,7 @@
 package com.dduckddak.domain.data.sales.controller;
 
 import com.dduckddak.domain.data.population.dto.TimelyDto;
-import com.dduckddak.domain.data.sales.dto.SalesTop10OfIndustryResponse;
-import com.dduckddak.domain.data.sales.dto.SalesTop10Response;
-import com.dduckddak.domain.data.sales.dto.SalesTransitionByIndustryResponse;
-import com.dduckddak.domain.data.sales.dto.SalesTransitionResponse;
+import com.dduckddak.domain.data.sales.dto.*;
 import com.dduckddak.domain.data.sales.service.SalesService;
 import com.dduckddak.domain.town.dto.SalesResponse;
 import com.dduckddak.global.ApiResponse;
@@ -65,5 +62,21 @@ public class SalesController {
     public ApiResponse<SalesTransitionByIndustryResponse> getSalesTransitionByIndustry(@RequestParam(value = "code") String townCode, @RequestParam(value = "industryName") String industryName){
         SalesTransitionByIndustryResponse salesTransitionResponseByIndustry = salesService.getSalesTransitionByIndustry(townCode, industryName);
         return success(salesTransitionResponseByIndustry);
+    }
+
+    @Operation(summary = "행정동의 업종 별 성 별 매출 비율")
+    @GetMapping("/towns/industry/sales/gender-rate")
+    public ApiResponse<SalesRateByGenderAndIndustryResponse> getSalesRateByGenderAndIndustry(@RequestParam(value = "code") String townCode, @RequestParam(value = "industryName") String industryName){
+        SalesRateByGenderAndIndustryResponse salesRateByGenderAndIndustry = salesService.getSalesRateByGenderAndIndustry(townCode, industryName);
+        return success(salesRateByGenderAndIndustry);
+    }
+
+    @Operation(summary = "행정동의 업종 별 나이 별 매출 비율")
+    @GetMapping("/towns/industry/sales/age-rate")
+    public ApiResponse<SalesRateByAgeAndIndustryResponse> getSalesRateByAgeAndIndustry(@RequestParam(value = "code") String townCode, @RequestParam(value = "industryName") String industryName){
+        SalesRateByAgeAndIndustryResponse salesRateByAgeAndIndustry = salesService.getSalesRateByAgeAndIndustry(townCode, industryName);
+        return success(
+                salesRateByAgeAndIndustry
+        );
     }
 }
