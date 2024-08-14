@@ -1,16 +1,14 @@
 package com.dduckddak.domain.town.controller;
 
-import com.dduckddak.domain.data.dto.*;
-import com.dduckddak.domain.town.dto.RecentlyTownIndustryResponse;
-import com.dduckddak.domain.town.dto.SalesResponse;
-import com.dduckddak.domain.town.dto.SimilarTownIndustryDto;
+import com.dduckddak.domain.data.markettrends.dto.MarketAnalysisResponse;
+import com.dduckddak.domain.data.markettrends.dto.MarketTrendsResponse;
+import com.dduckddak.domain.town.dto.*;
 import com.dduckddak.domain.town.service.TownIndustryService;
 import com.dduckddak.global.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
