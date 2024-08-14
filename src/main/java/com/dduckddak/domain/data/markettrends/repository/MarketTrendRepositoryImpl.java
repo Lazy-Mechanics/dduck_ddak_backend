@@ -3,10 +3,9 @@ package com.dduckddak.domain.data.markettrends.repository;
 import com.dduckddak.domain.data.markettrends.model.MarketTrends;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
-
 import java.util.List;
 
-import static com.dduckddak.domain.data.model.QMarketTrends.marketTrends;
+import static com.dduckddak.domain.data.markettrends.model.QMarketTrends.marketTrends;
 
 public class MarketTrendRepositoryImpl implements MarketTrendRepositoryCustom {
     private final JPAQueryFactory queryFactory;

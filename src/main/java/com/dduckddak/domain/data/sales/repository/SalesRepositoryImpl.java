@@ -1,10 +1,5 @@
 package com.dduckddak.domain.data.sales.repository;
-
-import com.dduckddak.domain.data.dto.*;
-import com.dduckddak.domain.data.sales.dto.RecentlySalesDto;
-import com.dduckddak.domain.data.sales.dto.SalesForTransitionData;
-import com.dduckddak.domain.data.sales.dto.SalesTop10OfIndustryResponse;
-import com.dduckddak.domain.data.sales.dto.SalesTop10Response;
+import com.dduckddak.domain.data.sales.dto.*;
 import com.dduckddak.domain.data.sales.model.Sales;
 import com.dduckddak.domain.town.dto.QSalesVO;
 import com.dduckddak.domain.town.dto.SalesVO;
@@ -18,7 +13,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.dduckddak.domain.data.model.QSales.sales;
+
+import static com.dduckddak.domain.data.sales.model.QSales.sales;
 import static com.dduckddak.domain.town.model.QTown.town;
 import static com.dduckddak.domain.town.model.QTownIndustry.townIndustry;
 

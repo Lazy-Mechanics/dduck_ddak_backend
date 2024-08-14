@@ -2,7 +2,7 @@ package com.dduckddak.domain.data.population.repository;
 
 import com.dduckddak.domain.data.population.dto.PopulationByDistrictResponse;
 import com.dduckddak.domain.data.population.dto.PopulationsTop10Response;
-import com.dduckddak.domain.data.dto.QPopulationByDistrictResponse;
+import com.dduckddak.domain.data.population.dto.QPopulationByDistrictResponse;
 import com.dduckddak.domain.data.population.model.Population;
 import com.dduckddak.domain.data.population.model.PopulationType;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.dduckddak.domain.data.model.QPopulation.population;
+
+import static com.dduckddak.domain.data.population.model.QPopulation.population;
 import static com.dduckddak.domain.town.model.QTown.town;
 
 @RequiredArgsConstructor

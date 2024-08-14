@@ -1,14 +1,14 @@
 package com.dduckddak.domain.data.facility.repository;
 
 import com.dduckddak.domain.data.facility.dto.FacilityByDistrictResponse;
-import com.dduckddak.domain.data.dto.QFacilityByDistrictResponse;
+import com.dduckddak.domain.data.facility.dto.QFacilityByDistrictResponse;
 import com.dduckddak.domain.data.facility.model.Facility;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
-import static com.dduckddak.domain.data.model.QFacility.facility;
+import static com.dduckddak.domain.data.facility.model.QFacility.facility;
 import static com.dduckddak.domain.town.model.QTown.town;
 
 @RequiredArgsConstructor
