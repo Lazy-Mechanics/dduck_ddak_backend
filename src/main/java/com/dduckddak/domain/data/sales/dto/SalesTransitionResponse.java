@@ -6,6 +6,7 @@ public record SalesTransitionResponse(
         List<SalesData> salesList
 ) {
     public record SalesData(
+            String townName,
             long quarter,
             long salesOfTown,
             int rankAtCity,

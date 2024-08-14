@@ -42,7 +42,7 @@ public class SalesService {
 
         List<SalesTransitionResponse.SalesData> salesDataList = new ArrayList<>();
 
-        long[] quarterArr = new long[]{20241L, 20234L, 20233L, 20232L, 20231L};
+        long[] quarterArr = new long[]{20231L,  20232L, 20233L, 20234L ,20241L };
         for(long quarter : quarterArr){
 
             List<SalesForTransitionData> listOfCity = salesForTransitionData.stream().filter
@@ -61,7 +61,7 @@ public class SalesService {
             int rankAtDistrict = listOfDistrict.indexOf(sales) + 1; // 20241분기 구 내 등수
             long populationAvgOfDistrict = (long) listOfDistrict.stream().mapToLong(s -> s.getSalesAtTown()).average().getAsDouble();
 
-            salesDataList.add(new SalesTransitionResponse.SalesData(quarter, sales.getSalesAtTown(),  rankAtCity, salesAvgOfCity, rankAtDistrict, populationAvgOfDistrict));
+            salesDataList.add(new SalesTransitionResponse.SalesData(sales.getTownName().split(" ")[1] ,quarter, sales.getSalesAtTown(),  rankAtCity, salesAvgOfCity, rankAtDistrict, populationAvgOfDistrict));
         }
 
         return SalesTransitionResponse.from(salesDataList);
@@ -73,7 +73,7 @@ public class SalesService {
 
         List<SalesTransitionByIndustryResponse.SalesData> salesDataList = new ArrayList<>();
 
-        long[] quarterArr = new long[]{20241L, 20234L, 20233L, 20232L, 20231L};
+        long[] quarterArr = new long[]{20231L,  20232L, 20233L, 20234L ,20241L };
         for(long quarter : quarterArr){
 
             List<SalesForTransitionData> listOfCity = salesForTransitionData.stream().filter
@@ -92,7 +92,7 @@ public class SalesService {
             int rankAtDistrict = listOfDistrict.indexOf(sales) + 1; // 20241분기 구 내 등수
             long populationAvgOfDistrict = (long) listOfDistrict.stream().mapToLong(s -> s.getSalesAtTown()).average().getAsDouble();
 
-            salesDataList.add(new SalesTransitionByIndustryResponse.SalesData(quarter, sales.getSalesAtTown(),  rankAtCity, salesAvgOfCity, rankAtDistrict, populationAvgOfDistrict));
+            salesDataList.add(new SalesTransitionByIndustryResponse.SalesData(sales.getTownName().split(" ")[1], industryName, quarter, sales.getSalesAtTown(),  rankAtCity, salesAvgOfCity, rankAtDistrict, populationAvgOfDistrict));
         }
 
         return SalesTransitionByIndustryResponse.from(salesDataList);

@@ -78,7 +78,7 @@ public class PopulationService {
         List<Population> populations = populationRepository.findFloatingPopulationTransition(code);
         List<PopulationData> populationDataList = new ArrayList<>();
 
-        long[] quarterArr = new long[]{20241L, 20234L, 20233L, 20232L, 20231L};
+        long[] quarterArr = new long[]{20231L,  20232L, 20233L, 20234L ,20241L };
         for(long quarter : quarterArr){
 
             List<Population> listOfCity = populations.stream().filter
@@ -97,7 +97,7 @@ public class PopulationService {
             int rankAtDistrict = listOfDistrict.indexOf(population) + 1; // 20241분기 구 내 등수
             long populationAvgOfDistrict = (long) listOfDistrict.stream().mapToLong(Population::getTotalPopulation).average().getAsDouble();
 
-            populationDataList.add(new PopulationData(quarter, populationOfTown, rankAtCity, populationAvgOfCity, rankAtDistrict, populationAvgOfDistrict));
+            populationDataList.add(new PopulationData(population.getTown().getName().split(" ")[1] ,quarter, populationOfTown, rankAtCity, populationAvgOfCity, rankAtDistrict, populationAvgOfDistrict));
         }
 
         return PopulationTransitionResponse.from(populationDataList);

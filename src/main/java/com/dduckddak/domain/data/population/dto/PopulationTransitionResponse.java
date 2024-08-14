@@ -6,6 +6,7 @@ public record PopulationTransitionResponse(
         List<PopulationData> populationList
 ) {
     public record PopulationData(
+            String townName,
             long quarter,
             long populationOfTown,
             int rankAtCity,

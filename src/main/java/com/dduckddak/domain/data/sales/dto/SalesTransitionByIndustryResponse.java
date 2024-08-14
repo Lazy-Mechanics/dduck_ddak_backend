@@ -6,6 +6,8 @@ public record SalesTransitionByIndustryResponse(
         List<SalesData> salesList
 ) {
     public record SalesData(
+            String townName,
+            String industryName,
             long quarter,
             long salesOfTown,
             int rankAtCity,
