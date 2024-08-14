@@ -3,7 +3,10 @@ package com.dduckddak.domain.data.population.dto;
 import java.util.List;
 
 public record PopulationTransitionResponse(
-        List<PopulationData> populationList
+        List<PopulationData> populationList,
+        int districtCount,
+        long differenceFromPreviousQuarter,
+        long differenceFromPreviousYear
 ) {
     public record PopulationData(
             String townName,
@@ -13,12 +16,11 @@ public record PopulationTransitionResponse(
             long populationAvgOfCity,
             int rankAtDistrict,
             long populationAvgOfDistrict
-
     ) {
     }
 
-    public static PopulationTransitionResponse from(List<PopulationData> populations) {
-        return new PopulationTransitionResponse(populations);
+    public static PopulationTransitionResponse from(List<PopulationData> populations, int districtCount, long differenceFromPreviousQuarter, long differenceFromPreviousYear) {
+        return new PopulationTransitionResponse(populations, districtCount, differenceFromPreviousQuarter, differenceFromPreviousYear);
     }
 }
 

@@ -10,9 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -78,6 +76,9 @@ public class PopulationService {
         List<Population> populations = populationRepository.findFloatingPopulationTransition(code);
         List<PopulationData> populationDataList = new ArrayList<>();
 
+        int districtCount = 0;
+
+        Map<Long , Long> map = new HashMap<>();
         long[] quarterArr = new long[]{20231L,  20232L, 20233L, 20234L ,20241L };
         for(long quarter : quarterArr){
 
@@ -87,6 +88,8 @@ public class PopulationService {
             Population population = listOfCity.stream().filter(p -> p.getTown().getCode().equals(code)).findFirst().get();
             long populationOfTown = population.getTotalPopulation();
 
+            map.put(quarter, population.getTotalPopulation()); // 분기 별 매출 저장
+
             int rankAtCity = listOfCity.indexOf(population) + 1; // 20241분기 시 내 등수
             long populationAvgOfCity = (long) listOfCity.stream().mapToLong(Population::getTotalPopulation).average().getAsDouble();
 
@@ -94,13 +97,17 @@ public class PopulationService {
             List<Population> listOfDistrict = listOfCity.stream().filter
                     (p -> p.getTown().getName().split(" ")[0].equals(population.getTown().getName().split(" ")[0])).toList();
 
+            districtCount = listOfDistrict.size();
+
             int rankAtDistrict = listOfDistrict.indexOf(population) + 1; // 20241분기 구 내 등수
             long populationAvgOfDistrict = (long) listOfDistrict.stream().mapToLong(Population::getTotalPopulation).average().getAsDouble();
 
             populationDataList.add(new PopulationData(population.getTown().getName().split(" ")[1] ,quarter, populationOfTown, rankAtCity, populationAvgOfCity, rankAtDistrict, populationAvgOfDistrict));
         }
+        long differenceFromPreviousQuarter = map.get(20241L) - map.get(20234L);
+        long differenceFromPreviousYear  = map.get(20241L) - map.get(20231L);
 
-        return PopulationTransitionResponse.from(populationDataList);
+        return PopulationTransitionResponse.from(populationDataList, districtCount, differenceFromPreviousQuarter, differenceFromPreviousYear);
 
 
     }
