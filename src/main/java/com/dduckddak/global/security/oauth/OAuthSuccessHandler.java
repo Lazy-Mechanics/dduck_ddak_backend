@@ -80,6 +80,6 @@ public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                 .build();
 
         response.addHeader("Set-Cookie", cookie.toString());
-        response.sendRedirect("https://www.gadduck.info");
+        response.sendRedirect("http://localhost:3000");
     }
 }
