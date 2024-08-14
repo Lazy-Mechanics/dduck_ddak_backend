@@ -11,7 +11,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScrapRequest {
-    @JsonProperty("town-code")
     private Long townCode;
     @JsonProperty("quarter")
     private Long quarter;
