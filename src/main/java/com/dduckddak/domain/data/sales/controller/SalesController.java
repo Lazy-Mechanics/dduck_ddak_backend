@@ -3,6 +3,7 @@ package com.dduckddak.domain.data.sales.controller;
 import com.dduckddak.domain.data.population.dto.TimelyDto;
 import com.dduckddak.domain.data.sales.dto.SalesTop10OfIndustryResponse;
 import com.dduckddak.domain.data.sales.dto.SalesTop10Response;
+import com.dduckddak.domain.data.sales.dto.SalesTransitionByIndustryResponse;
 import com.dduckddak.domain.data.sales.dto.SalesTransitionResponse;
 import com.dduckddak.domain.data.sales.service.SalesService;
 import com.dduckddak.domain.town.dto.SalesResponse;
@@ -57,5 +58,12 @@ public class SalesController {
     public ApiResponse<SalesTransitionResponse> getSalesTransition(@RequestParam(value = "code") String code){
         SalesTransitionResponse salesTransitionResponse = salesService.getSalesTransition(code);
         return success(salesTransitionResponse);
+    }
+
+    @Operation(summary = "행정동의 업종 별 매출 추이")
+    @GetMapping("/towns/industry/sales/transition")
+    public ApiResponse<SalesTransitionByIndustryResponse> getSalesTransitionByIndustry(@RequestParam(value = "code") String townCode, @RequestParam(value = "industryName") String industryName){
+        SalesTransitionByIndustryResponse salesTransitionResponseByIndustry = salesService.getSalesTransitionByIndustry(townCode, industryName);
+        return success(salesTransitionResponseByIndustry);
     }
 }

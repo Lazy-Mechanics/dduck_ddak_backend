@@ -15,6 +15,7 @@ import java.util.List;
 
 
 import static com.dduckddak.domain.data.sales.model.QSales.sales;
+import static com.dduckddak.domain.town.model.QIndustry.industry;
 import static com.dduckddak.domain.town.model.QTown.town;
 import static com.dduckddak.domain.town.model.QTownIndustry.townIndustry;
 
@@ -272,6 +273,29 @@ public class SalesRepositoryImpl implements SalesRepositoryCustom{
         }
 
         return responseList;
+
+    }
+
+    @Override
+    public List<SalesForTransitionData> findSalesByIndustryForTransitionData(String industryName) {
+        return queryFactory
+                .select(new QSalesForTransitionData(
+                        town.name.stringValue(),
+                        town.code.stringValue(),
+                        town.quarter,
+                        sales.currentMonthlySales
+                ))
+                .from(townIndustry)
+                .innerJoin(townIndustry.town, town)
+                .innerJoin(townIndustry.industry, industry)
+                .innerJoin(sales).on(sales.townIndustry.eq(townIndustry))
+                .where(
+                        industry.name.eq(industryName),
+                        town.quarter.in(20241L, 20234L, 20233L, 20232L, 20231L)
+                )
+                .orderBy(town.quarter.desc(), sales.currentMonthlySales.desc())
+                .fetch();
+
 
     }
 }

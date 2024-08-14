@@ -1,10 +1,7 @@
 package com.dduckddak.domain.data.sales.service;
 
 import com.dduckddak.domain.data.population.dto.TimelyDto;
-import com.dduckddak.domain.data.sales.dto.SalesForTransitionData;
-import com.dduckddak.domain.data.sales.dto.SalesTop10OfIndustryResponse;
-import com.dduckddak.domain.data.sales.dto.SalesTop10Response;
-import com.dduckddak.domain.data.sales.dto.SalesTransitionResponse;
+import com.dduckddak.domain.data.sales.dto.*;
 import com.dduckddak.domain.data.sales.repository.SalesRepository;
 import com.dduckddak.domain.town.dto.SalesResponse;
 import lombok.RequiredArgsConstructor;
@@ -68,5 +65,36 @@ public class SalesService {
         }
 
         return SalesTransitionResponse.from(salesDataList);
+    }
+
+    public SalesTransitionByIndustryResponse getSalesTransitionByIndustry(String townCode, String industryName) {
+        List<SalesForTransitionData> salesForTransitionData = salesRepository.findSalesByIndustryForTransitionData(industryName);
+
+
+        List<SalesTransitionByIndustryResponse.SalesData> salesDataList = new ArrayList<>();
+
+        long[] quarterArr = new long[]{20241L, 20234L, 20233L, 20232L, 20231L};
+        for(long quarter : quarterArr){
+
+            List<SalesForTransitionData> listOfCity = salesForTransitionData.stream().filter
+                    (s -> s.getQuarter().equals(quarter)).toList();
+
+            SalesForTransitionData sales = listOfCity.stream().filter(s -> s.getTownCode().equals(townCode)).findFirst().get();
+            Long salesAtTown = sales.getSalesAtTown();
+
+            int rankAtCity = listOfCity.indexOf(sales) + 1; // 20241분기 시 내 등수
+            long salesAvgOfCity = (long) listOfCity.stream().mapToLong(s -> s.getSalesAtTown()).average().getAsDouble();
+
+
+            List<SalesForTransitionData> listOfDistrict = listOfCity.stream().filter
+                    (s -> s.getTownName().split(" ")[0].equals(sales.getTownName().split(" ")[0])).toList();
+
+            int rankAtDistrict = listOfDistrict.indexOf(sales) + 1; // 20241분기 구 내 등수
+            long populationAvgOfDistrict = (long) listOfDistrict.stream().mapToLong(s -> s.getSalesAtTown()).average().getAsDouble();
+
+            salesDataList.add(new SalesTransitionByIndustryResponse.SalesData(quarter, sales.getSalesAtTown(),  rankAtCity, salesAvgOfCity, rankAtDistrict, populationAvgOfDistrict));
+        }
+
+        return SalesTransitionByIndustryResponse.from(salesDataList);
     }
 }

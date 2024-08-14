@@ -15,10 +15,14 @@ public interface SalesRepositoryCustom {
     SalesVO findByTownAndIndustry(int code, String name);
     List<Sales> findByTownAndIndustryInDistrict(String district, String name);
 
-    List<SalesForTransitionData> findSalesForTransitionData();
+
 
 
     List<SalesTop10Response> findSalesTop10(String orderCriteria);
 
     List<SalesTop10OfIndustryResponse> findSalesTop10OfIndustry(String name, String orderCriteria);
+
+    List<SalesForTransitionData> findSalesForTransitionData();
+
+    List<SalesForTransitionData> findSalesByIndustryForTransitionData(String industryName);
 }
