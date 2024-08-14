@@ -88,7 +88,7 @@ public class PopulationService {
             Population population = listOfCity.stream().filter(p -> p.getTown().getCode().equals(code)).findFirst().get();
             long populationOfTown = population.getTotalPopulation();
 
-            map.put(quarter, population.getTotalPopulation()); // 분기 별 매출 저장
+            map.put(quarter, population.getTotalPopulation()); // 분기 별 유동인구수 저장
 
             int rankAtCity = listOfCity.indexOf(population) + 1; // 20241분기 시 내 등수
             long populationAvgOfCity = (long) listOfCity.stream().mapToLong(Population::getTotalPopulation).average().getAsDouble();

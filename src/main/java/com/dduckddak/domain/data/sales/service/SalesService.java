@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +43,8 @@ public class SalesService {
 
 
         List<SalesTransitionResponse.SalesData> salesDataList = new ArrayList<>();
-
+        int districtCount = 0;
+        Map<Long , Long> map = new HashMap<>();
         long[] quarterArr = new long[]{20231L,  20232L, 20233L, 20234L ,20241L };
         for(long quarter : quarterArr){
 
@@ -50,21 +53,25 @@ public class SalesService {
 
             SalesForTransitionData sales = listOfCity.stream().filter(s -> s.getTownCode().equals(code)).findFirst().get();
             Long salesAtTown = sales.getSalesAtTown();
+            map.put(quarter, sales.getSalesAtTown()); // 분기 별 매출 저장
+
 
             int rankAtCity = listOfCity.indexOf(sales) + 1; // 20241분기 시 내 등수
             long salesAvgOfCity = (long) listOfCity.stream().mapToLong(s -> s.getSalesAtTown()).average().getAsDouble();
 
-
             List<SalesForTransitionData> listOfDistrict = listOfCity.stream().filter
                     (s -> s.getTownName().split(" ")[0].equals(sales.getTownName().split(" ")[0])).toList();
+
+            districtCount = listOfDistrict.size();
 
             int rankAtDistrict = listOfDistrict.indexOf(sales) + 1; // 20241분기 구 내 등수
             long populationAvgOfDistrict = (long) listOfDistrict.stream().mapToLong(s -> s.getSalesAtTown()).average().getAsDouble();
 
             salesDataList.add(new SalesTransitionResponse.SalesData(sales.getTownName().split(" ")[1] ,quarter, sales.getSalesAtTown(),  rankAtCity, salesAvgOfCity, rankAtDistrict, populationAvgOfDistrict));
         }
-
-        return SalesTransitionResponse.from(salesDataList);
+        long differenceFromPreviousQuarter = map.get(20241L) - map.get(20234L);
+        long differenceFromPreviousYear  = map.get(20241L) - map.get(20231L);
+        return SalesTransitionResponse.from(salesDataList, districtCount, differenceFromPreviousQuarter, differenceFromPreviousYear);
     }
 
     public SalesTransitionByIndustryResponse getSalesTransitionByIndustry(String townCode, String industryName) {
@@ -73,6 +80,9 @@ public class SalesService {
 
         List<SalesTransitionByIndustryResponse.SalesData> salesDataList = new ArrayList<>();
 
+        int districtCount = 0;
+
+        Map<Long , Long> map = new HashMap<>();
         long[] quarterArr = new long[]{20231L,  20232L, 20233L, 20234L ,20241L };
         for(long quarter : quarterArr){
 
@@ -82,6 +92,8 @@ public class SalesService {
             SalesForTransitionData sales = listOfCity.stream().filter(s -> s.getTownCode().equals(townCode)).findFirst().get();
             Long salesAtTown = sales.getSalesAtTown();
 
+            map.put(quarter, sales.getSalesAtTown()); // 분기 별 매출 저장
+
             int rankAtCity = listOfCity.indexOf(sales) + 1; // 20241분기 시 내 등수
             long salesAvgOfCity = (long) listOfCity.stream().mapToLong(s -> s.getSalesAtTown()).average().getAsDouble();
 
@@ -89,13 +101,16 @@ public class SalesService {
             List<SalesForTransitionData> listOfDistrict = listOfCity.stream().filter
                     (s -> s.getTownName().split(" ")[0].equals(sales.getTownName().split(" ")[0])).toList();
 
+            districtCount = listOfDistrict.size();
+
             int rankAtDistrict = listOfDistrict.indexOf(sales) + 1; // 20241분기 구 내 등수
             long populationAvgOfDistrict = (long) listOfDistrict.stream().mapToLong(s -> s.getSalesAtTown()).average().getAsDouble();
 
             salesDataList.add(new SalesTransitionByIndustryResponse.SalesData(sales.getTownName().split(" ")[1], industryName, quarter, sales.getSalesAtTown(),  rankAtCity, salesAvgOfCity, rankAtDistrict, populationAvgOfDistrict));
         }
-
-        return SalesTransitionByIndustryResponse.from(salesDataList);
+        long differenceFromPreviousQuarter = map.get(20241L) - map.get(20234L);
+        long differenceFromPreviousYear  = map.get(20241L) - map.get(20231L);
+        return SalesTransitionByIndustryResponse.from(salesDataList, districtCount, differenceFromPreviousQuarter, differenceFromPreviousYear);
     }
 
     public SalesRateByGenderAndIndustryResponse getSalesRateByGenderAndIndustry(String townCode, String industryName) {
