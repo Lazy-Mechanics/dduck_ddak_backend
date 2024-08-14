@@ -101,7 +101,7 @@ public class SalesRepositoryImpl implements SalesRepositoryCustom{
                     town.quarter.in(20241L, 20234L, 20233L, 20232L, 20231L)
                 )
                 .groupBy(town.name, town.quarter, town.code)
-                .orderBy(town.quarter.desc(), sales.currentMonthlySales.sum().desc())
+                .orderBy(town.quarter.asc(), sales.currentMonthlySales.sum().desc())
                 .fetch();
 
     }
@@ -293,7 +293,7 @@ public class SalesRepositoryImpl implements SalesRepositoryCustom{
                         industry.name.eq(industryName),
                         town.quarter.in(20241L, 20234L, 20233L, 20232L, 20231L)
                 )
-                .orderBy(town.quarter.desc(), sales.currentMonthlySales.desc())
+                .orderBy(town.quarter.asc(), sales.currentMonthlySales.desc())
                 .fetch();
 
 
