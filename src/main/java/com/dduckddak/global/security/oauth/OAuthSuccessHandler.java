@@ -1,9 +1,9 @@
 package com.dduckddak.global.security.oauth;
 
 
-import com.dduckddak.domain.member.model.Member;
-import com.dduckddak.domain.member.model.MemberRole;
-import com.dduckddak.domain.member.repository.MemberRepository;
+import com.dduckddak.domain.data.member.model.Member;
+import com.dduckddak.domain.data.member.model.MemberRole;
+import com.dduckddak.domain.data.member.repository.MemberRepository;
 import com.dduckddak.global.security.jwt.JwtProvider;
 import com.dduckddak.global.security.jwt.JwtToken;
 import com.dduckddak.global.security.jwt.JwtUtils;
@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;

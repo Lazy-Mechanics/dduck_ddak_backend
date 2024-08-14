@@ -1,8 +1,7 @@
 package com.dduckddak.domain.town.repository;
 
-import com.dduckddak.domain.data.dto.SalesTop10OfIndustryResponse;
-import com.dduckddak.domain.data.dto.StoreCountTop10OfIndustryResponse;
-import com.dduckddak.domain.data.dto.StoreCountTop10Response;
+import com.dduckddak.domain.town.dto.StoreCountTop10OfIndustryResponse;
+import com.dduckddak.domain.town.dto.StoreCountTop10Response;
 import com.dduckddak.domain.town.dto.QRecentlyTownIndustryResponse;
 import com.dduckddak.domain.town.dto.QSimilarTownIndustryDto;
 import com.dduckddak.domain.town.dto.RecentlyTownIndustryResponse;
