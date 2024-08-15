@@ -39,6 +39,7 @@ public class SalesService {
         return salesRepository.findSalesTop10OfIndustry(name, orderCriteria);
     }
 
+    @Cacheable(value = "postsCache1", cacheManager = "redisCacheManager")
     public SalesTransitionResponse getSalesTransition(String code) {
         List<SalesForTransitionData> salesForTransitionData = salesRepository.findSalesForTransitionData();
 
