@@ -6,6 +6,7 @@ import com.dduckddak.domain.data.sales.repository.SalesRepository;
 import com.dduckddak.domain.town.dto.SalesResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,6 +75,7 @@ public class SalesService {
         return SalesTransitionResponse.from(salesDataList, districtCount, differenceFromPreviousQuarter, differenceFromPreviousYear);
     }
 
+    @Cacheable(value = "postsCache", cacheManager = "redisCacheManager")
     public SalesTransitionByIndustryResponse getSalesTransitionByIndustry(String townCode, String industryName) {
         List<SalesForTransitionData> salesForTransitionData = salesRepository.findSalesByIndustryForTransitionData(industryName);
 
