@@ -7,6 +7,7 @@ import com.dduckddak.domain.data.population.model.PopulationType;
 import com.dduckddak.domain.data.population.repository.PopulationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,6 +73,7 @@ public class PopulationService {
         return populationRepository.findPopulationsTop10(columnName, orderCriteria, "'residentPopulation'");
     }
 
+    @Cacheable(value = "postsCache2", cacheManager = "redisCacheManager")
     public PopulationTransitionResponse getFloatingPopulationTransition(String code) {
         List<Population> populations = populationRepository.findFloatingPopulationTransition(code);
         List<PopulationData> populationDataList = new ArrayList<>();
