@@ -39,7 +39,7 @@ public class SalesService {
         return salesRepository.findSalesTop10OfIndustry(name, orderCriteria);
     }
 
-    @Cacheable(value = "postsCache1", cacheManager = "redisCacheManager")
+    //@Cacheable(value = "postsCache1", cacheManager = "redisCacheManager")
     public SalesTransitionResponse getSalesTransition(String code) {
         List<SalesForTransitionData> salesForTransitionData = salesRepository.findSalesForTransitionData();
 
@@ -76,7 +76,7 @@ public class SalesService {
         return SalesTransitionResponse.from(salesDataList, districtCount, differenceFromPreviousQuarter, differenceFromPreviousYear);
     }
 
-    @Cacheable(value = "postsCache", cacheManager = "redisCacheManager")
+    //@Cacheable(value = "postsCache", cacheManager = "redisCacheManager")
     public SalesTransitionByIndustryResponse getSalesTransitionByIndustry(String townCode, String industryName) {
         List<SalesForTransitionData> salesForTransitionData = salesRepository.findSalesByIndustryForTransitionData(industryName);
 

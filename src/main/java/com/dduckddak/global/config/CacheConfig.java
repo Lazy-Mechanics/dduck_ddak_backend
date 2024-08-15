@@ -1,3 +1,4 @@
+/*
 package com.dduckddak.global.config;
 
 import lombok.RequiredArgsConstructor;
@@ -68,3 +69,4 @@ public class CacheConfig {
                 .cacheDefaults(redisCacheConfiguration).build();
     }
 }
+*/

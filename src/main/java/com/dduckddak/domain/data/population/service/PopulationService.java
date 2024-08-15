@@ -73,7 +73,7 @@ public class PopulationService {
         return populationRepository.findPopulationsTop10(columnName, orderCriteria, "'residentPopulation'");
     }
 
-    @Cacheable(value = "postsCache2", cacheManager = "redisCacheManager")
+    //@Cacheable(value = "postsCache2", cacheManager = "redisCacheManager")
     public PopulationTransitionResponse getFloatingPopulationTransition(String code) {
         List<Population> populations = populationRepository.findFloatingPopulationTransition(code);
         List<PopulationData> populationDataList = new ArrayList<>();

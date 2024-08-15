@@ -10,7 +10,7 @@ import org.springframework.cache.annotation.EnableCaching;
 @OpenAPIDefinition(servers = {
 		@Server(url = "https://api.gadduck.info", description = "Default Server URL")
 })
-@EnableCaching
+//@EnableCaching
 public class DduckddakApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DduckddakApplication.class, args);
